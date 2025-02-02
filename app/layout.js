@@ -1,4 +1,7 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Geist, Geist_Mono } from "next/font/google";
+import BootstrapProvider from "./bootstrap-provider";
+import Header from "./components/Header/Header";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,6 +25,8 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Header/>
+        <BootstrapProvider />
         {children}
       </body>
     </html>
