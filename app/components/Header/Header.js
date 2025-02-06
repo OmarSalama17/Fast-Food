@@ -9,13 +9,15 @@ function Header() {
     <>
     <header className="bg-gray-800 p-4 absolute top-0 left-0 w-full z-50">
       <div className="container mx-auto flex justify-between items-center relative z-50">
-        <a href="#" className="text-white text-xl font-bold">Navbar Offcanvas</a>
+        <div>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="text-white focus:outline-none"
         >
           ☰
         </button>
+        <a href="#" className="text-white text-xl font-bold">Navbar Offcanvas</a>
+        </div>
       </div>
     </header>
       {isOpen && <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={() => setIsOpen(false)}></div>}
