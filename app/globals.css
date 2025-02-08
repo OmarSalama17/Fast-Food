@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #f1f3f6;
   --foreground: #171717;
 }
 
@@ -18,4 +18,13 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+.shadow-hover:hover{
+  box-shadow: rgba(222, 0, 0, 0.25) 0px 1rem 1rem;
+}
+.border-color{
+  border-color: #e4002b !important;
+}
+.shadow-nav{
+  box-shadow: 0 .3rem .9rem #0000001a;
 }

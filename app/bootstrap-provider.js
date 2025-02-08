@@ -1,4 +1,4 @@
-"use client"; // ✅ هذا الملف يجب أن يكون Client Component
+"use client"; 
 
 import { useEffect } from "react";
 
@@ -7,5 +7,5 @@ export default function BootstrapProvider() {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
-  return null; // 🔹 لا يحتاج إلى إرجاع أي شيء
+  return null; 
 }
