@@ -7,12 +7,12 @@ export default async function Product (){
         <>
             <div>
                 <h1>Product</h1>
-                {data.map ((i,e) =>{
+                {data.map ((product,e) =>{
                     return(
-                        <Link key={e} href={`details/${i.id}`}>
+                        <Link key={e} href={`product/${product.id}`}>
                         <div >
-                            <h2>{i.name}</h2>
-                            <p>{i.price}</p>
+                            <h2>{product.name}</h2>
+                            <p>{product.price}</p>
                         </div>
                         </Link>
                     )
