@@ -4,6 +4,7 @@ import BootstrapProvider from "./bootstrap-provider";
 import Header from "./components/Header/Header";
 import "./globals.css";
 import Landing from "./components/Landing/Landing.js";
+import ContextProvider from './components/Context-Api/Context-Api';
 
 
 const geistSans = Geist({
@@ -27,9 +28,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ContextProvider>
         <Header/>
         <BootstrapProvider />
+        <div className='mt-[70px]'>
         {children}
+        </div>
+        </ContextProvider>
       </body>
     </html>
   );

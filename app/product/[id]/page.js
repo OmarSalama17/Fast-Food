@@ -1,9 +1,15 @@
-export default async function Details ({params}) {
-    const id = Number(params.productid)
+import { Metadata } from "next";
+export const generateMetadata = async ({params})  => {
+    const {id} = params; 
+return{
+    title:`page ${id}`
+}
+}
+export default async function Details ({params} ) {
+    const {id} = params;
     const res = await fetch(`https://677184e2ee76b92dd48fe746.mockapi.io/api/fastfood/products/${id}`)
     const data = await res.json()
-    console.log(params.productid);
-    
+    console.log(id);
     return (
         <>
         <div className="container flex items-center justify-center h-[1000px]">
