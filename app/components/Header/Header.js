@@ -15,7 +15,7 @@ console.log(ctx);
 
   return (
     <>
-    <header className="bg-white py-[14px] fixed top-0 left-0 w-full z-30 shadow-nav">
+    <header className="bg-white py-[14px] fixed top-0 left-0 w-full z-30 shadow-nav  ">
       <div className="container mx-auto flex justify-between items-center relative z-50">
         <div className="flex items-center">
         <button

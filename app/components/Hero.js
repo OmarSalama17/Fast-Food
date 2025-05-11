@@ -171,15 +171,15 @@ export const Hero = () => {
                   <button
                     className="absolute top-2 right-2 text-xl"
                     onClick={() => setShow(null)}
-                  >
+                    >
                     ❌
                   </button>
                   <h2 className="text-xl font-bold mb-2">{show.title}</h2>
                   <img
-                    src={show.image}
+                    src={show.url}
                     alt={show.title}
                     className="w-full h-48 object-cover rounded mb-4"
-                  />
+                    />
                   <p>{show.description}</p>
       
                   <button className="mt-4 bg-red-600 text-white px-4 py-2 rounded">
