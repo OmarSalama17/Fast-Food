@@ -1,6 +1,24 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 
 export const Hero = () => {
+  const [show, setShow] = useState(null);
+  const data = [
+    {
+      id: 1,
+      title:"Mix & Match" ,
+      description: "Mighty Zinger Sandwich + Rizo + Coleslaw+ Drink",
+      price: 250,
+      image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png",
+    },
+    {
+      id: 2,
+      title:"Mix & Mch" ,
+      description: "Mighty Zinger Sandwich + Rizo + Coleslaw+ Drink",
+      price: 250,
+      image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png",
+    }
+  ]
   return (
     <>
     <div className='flex justify-between'>
@@ -38,13 +56,16 @@ export const Hero = () => {
         </p>
     </div>
     <div className='container flex py-[20px]'>
-    <div className='pt-[90px] px-[10px] pb-[20px] mt-[135] relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
+      {
+        data.map((item) => {
+          return (
+    <div key={item.id} onClick={()=>setShow(item)} className='pt-[90px] px-[10px] pb-[20px] mt-[135] relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
         <div className='w-[210px] absolute top-[-115] right-[20px] '>
-                <img src="https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png"/>
+                <img src={item.image}/>
         </div>
         <div className='flex justify-between'>
             <div>
-                <h3 className='pb-[10px] pr-[20px] text-[15px] font-bold'>Mix & Match</h3>
+                <h3 className='pb-[10px] pr-[20px] text-[15px] font-bold'>{item.title}</h3>
             </div>
             <div>
             <svg
@@ -76,17 +97,45 @@ export const Hero = () => {
             </div>
         </div>
         <div>
-            <p className='text-[12px] my-[10px] text-[#6a6e7b]'>Mighty Zinger Sandwich + Rizo + Coleslaw+ Drink
+            <p className='text-[12px] my-[10px] text-[#6a6e7b]'>{item.description}
 </p>
         </div>
         <div className='text-center bg-[#f1f3f6] rounded-md mb-[20px]'>
-                <p className='py-[10px] text-[12px] font-extrabold'>265.00 EGP</p>
+                <p className='py-[10px] text-[12px] font-extrabold'>{item.price}</p>
         </div>
         <div className='absolute border-2 border-color bg-white rounded-lg  w-[140px] text-center justify-anchor-center'>
             <button className=' text-[12px] text-[#e4002b] py-[7px] px-[15px] font-extrabold '>ADD TO CART</button>
         </div>
     </div>
+          )
+        })
+      }
       </div>
+      {show && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                <div className="bg-white p-6 rounded-xl max-w-md w-full relative">
+                  <button
+                    className="absolute top-2 right-2 text-xl"
+                    onClick={() => setShow(null)}
+                  >
+                    ❌
+                  </button>
+                  <h2 className="text-xl font-bold mb-2">{show.title}</h2>
+                  <img
+                    src={show.image}
+                    alt={show.title}
+                    className="w-full h-48 object-cover rounded mb-4"
+                  />
+                  <p>{show.description}</p>
+      
+                  <button className="mt-4 bg-red-600 text-white px-4 py-2 rounded">
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+      )
+        
+      }
       </>
   )
 }

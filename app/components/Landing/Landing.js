@@ -1,42 +1,40 @@
 "use client";
-import { useState } from "react";
-import Carousel from "react-bootstrap/Carousel";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useRef, useState } from 'react';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import "../../globals.css"
+// import required modules
+import { Pagination , Autoplay} from 'swiper/modules';
 
 function Landing() {
-  const [index, setIndex] = useState(0);
-
-  const handleSelect = (selectedIndex) => {
-    setIndex(selectedIndex);
-  };
 
   return (
     <>
-      <Carousel activeIndex={index} onSelect={handleSelect}>
-        <Carousel.Item>
-          <img
-            className="d-block w-100"
-            src="https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/dinnerplus_EGY_En_100325.jpg"
-            alt="First slide"
-          />
-        </Carousel.Item>
-
-        <Carousel.Item>
-          <img
-            className="d-block w-100"
-            src="https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/dinnerplus_EGY_En_100325.jpg"
-            alt="Second slide"
-          />
-        </Carousel.Item>
-
-        <Carousel.Item>
-          <img
-            className="d-block w-100"
-            src="https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/dinnerplus_EGY_En_100325.jpg"
-            alt="Third slide"
-          />
-        </Carousel.Item>
-      </Carousel>
+            <Swiper
+            spaceBetween={30}
+            autoplay={{
+              delay: 3000, 
+              disableOnInteraction: false,
+            }}
+        pagination={{
+          clickable: true,
+        }}
+        modules={[Pagination , Autoplay]}
+        className="mySwiper">
+        <SwiperSlide><img src='https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/zingerkantook_EGY_Ar_080525.jpg'/> </SwiperSlide>
+        <SwiperSlide><img src='https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/zingerkantook_EGY_Ar_080525.jpg'/></SwiperSlide>
+        <SwiperSlide><img src='https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/zingerkantook_EGY_Ar_080525.jpg'/></SwiperSlide>
+        <SwiperSlide><img src='https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/zingerkantook_EGY_Ar_080525.jpg'/></SwiperSlide>
+        <SwiperSlide><img src='https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/zingerkantook_EGY_Ar_080525.jpg'/></SwiperSlide>
+        <SwiperSlide><img src='https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/zingerkantook_EGY_Ar_080525.jpg'/></SwiperSlide>
+        <SwiperSlide><img src='https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/zingerkantook_EGY_Ar_080525.jpg'/></SwiperSlide>
+        <SwiperSlide><img src='https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/zingerkantook_EGY_Ar_080525.jpg'/></SwiperSlide>
+        <SwiperSlide><img src='https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/desktop/zingerkantook_EGY_Ar_080525.jpg'/></SwiperSlide>
+      </Swiper>
     </>
   );
 }

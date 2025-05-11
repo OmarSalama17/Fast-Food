@@ -28,10 +28,6 @@ console.log(ctx);
       <rect x="15.9961" y="21.3164" width="12.0051" height="2.68318" fill="#393F52"></rect>
     </svg>
         </button>
-        <button onClick={Handel}>
-          عداد
-        </button>
-        {count + "عدادددددد"}
         <a href="#" className="text-white text-xl font-bold">    
         <svg width="66" height="22" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
       <g className="layer">

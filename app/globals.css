@@ -34,3 +34,44 @@ body {
 .cart-radius{
   border-radius:1.5rem 1.5rem .6rem .6rem
 }
+/* swiper*/
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swiper-pagination-bullet {
+  width: 8px !important;
+  height: 8px !important;
+  background: #999 !important;
+  opacity: 1 !important;
+  transition: all 0.3s ease !important;
+  margin: 0 4px !important;
+  border-radius: 50% !important;
+}
+
+.swiper-pagination-bullet-active {
+  width: 20px !important;
+  border-radius: 1rem !important;
+  background: #fff !important;
+  height: 10px !important;
+}
+
+/* swiper*/
