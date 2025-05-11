@@ -5,8 +5,10 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  corePlugins: {
+    container: false, // ✅ كده بتعطلها تمامًا
+  },
   theme: {
-    container: false,
     extend: {
       colors: {
         background: "var(--background)",
