@@ -1,7 +1,7 @@
 "use client"
+import { motion, AnimatePresence } from "framer-motion"; // ضيف السطر ده فوق
 import React, { useEffect, useState } from 'react'
 import ProductApi from '../_utils/ProductApi';
-import DFCLoader from './DFCLoader';
 import Loading from '../loading';
 export const Hero = () => {
   const [show, setShow] = useState(null);
@@ -83,8 +83,8 @@ export const Hero = () => {
       setModalLoading(false);
       setShow(item)
       }, 1000);
-    }} className='pt-[90px] px-[10px] pb-[20px] mt-[135] relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
-        <div className='w-[210px] absolute top-[-115] right-[20px] '>
+    }} className='pt-[90px] px-[10px] pb-[20px] mt-[135px] relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
+        <div className='w-[210px] absolute top-[-115px] right-[20px] '>
                 <img />
         </div>
         <div className='flex justify-between'>
@@ -136,21 +136,38 @@ export const Hero = () => {
       }
       </div>
             {modalLoading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-xl max-w-md w-full relative animate-pulse">
+        <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }} 
+        transition={{ duration: 0.3 }}
+        className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <motion.div className="bg-white p-6 rounded-xl max-w-md w-full relative animate-pulse">
             <div className="w-full h-48 bg-gray-300 mb-4 rounded"></div>
             <div className="h-4 bg-gray-300 w-3/4 mb-2 rounded"></div>
             <div className="h-3 bg-gray-200 w-1/2 mb-4 rounded"></div>
             <div className="h-8 bg-gray-300 w-full rounded"></div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
                   {modalLoading && (
 <Loading/>
       )}
+      <AnimatePresence>
+
       {show && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                <div className="bg-white p-6 rounded-xl max-w-md w-full relative">
+                <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }} 
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50" onClick={()=> setShow(null)}>
+                <motion.div 
+                        initial={{ scale: 0.8 }} 
+                        animate={{ scale: 1 }} 
+                        exit={{ scale: 0.8 }} 
+                        transition={{ duration: 0.3 }} 
+                className="bg-white p-6 rounded-xl max-w-md w-full relative" onClick={(e)=> e.stopPropagation()}>
                   <button
                     className="absolute top-2 right-2 text-xl"
                     onClick={() => setShow(null)}
@@ -168,11 +185,13 @@ export const Hero = () => {
                   <button className="mt-4 bg-red-600 text-white px-4 py-2 rounded">
                     Add to Cart
                   </button>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
       )
         
       }
+      </AnimatePresence>
+
       </>
   )
 }
