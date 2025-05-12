@@ -5,6 +5,7 @@ import Header from "./components/Header/Header";
 import "./globals.css";
 import Landing from "./components/Landing/Landing.js";
 import ContextProvider from './components/Context-Api/Context-Api';
+import Footer from './components/Footer/Footer';
 
 
 const geistSans = Geist({
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
         <div className='mt-[70px]'>
         {children}
         </div>
+        <Footer/>
         </ContextProvider>
       </body>
     </html>

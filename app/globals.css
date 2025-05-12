@@ -28,3 +28,9 @@ body {
 .shadow-nav{
   box-shadow: 0 .3rem .9rem #0000001a;
 }
+.justify-anchor-center{
+  justify-self: anchor-center;
+}
+.cart-radius{
+  border-radius:1.5rem 1.5rem .6rem .6rem
+}
