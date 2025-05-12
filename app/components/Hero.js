@@ -1,5 +1,5 @@
 "use client"
-import { motion, AnimatePresence } from "framer-motion"; // ضيف السطر ده فوق
+import { motion, AnimatePresence } from "framer-motion"; 
 import React, { useEffect, useState } from 'react'
 import ProductApi from '../_utils/ProductApi';
 import Loading from '../loading';
@@ -8,7 +8,6 @@ export const Hero = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
-
   useEffect(()=>{
     getLatestProducts_()
   },[])
@@ -21,6 +20,7 @@ export const Hero = () => {
         
       })
     },100)
+    
 }
   return (
     <>
