@@ -15,7 +15,7 @@ console.log(ctx);
 
   return (
     <>
-    <header className="bg-white py-[14px] fixed top-0 left-0 w-full z-50 shadow-nav">
+    <header className="bg-white py-[14px] fixed top-0 left-0 w-full z-30 shadow-nav">
       <div className="container mx-auto flex justify-between items-center relative z-50">
         <div className="flex items-center">
         <button
@@ -28,7 +28,7 @@ console.log(ctx);
       <rect x="15.9961" y="21.3164" width="12.0051" height="2.68318" fill="#393F52"></rect>
     </svg>
         </button>
-        <a href="#" className="text-white text-xl font-bold">    
+        <a href="/" className="text-white text-xl font-bold">    
         <svg width="66" height="22" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
       <g className="layer">
         <title>Layer 1</title>

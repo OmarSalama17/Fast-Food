@@ -3,13 +3,13 @@ import React from 'react'
 
 const Footer = () => {
     const data = [
-            {title : "Menu" , href:"/Menu"},
-            {title : "Menu" , href:"/Menu"},
-            {title : "Menu" , href:"/Menu"},
-            {title : "Menu" , href:"/Menu"},
-            {title : "Menu" , href:"/Menu"},
-            {title : "Menu" , href:"/Menu"},
-            {title : "Menu" , href:"/Menu"},
+            {title : "Menu" , href:"/storelocations"},
+            {title : "Store Locations" , href:"/Menu"},
+            {title : "Party Order" , href:"/partyorder"},
+            {title : "Privacy Policy" , href:"/privacypolicy"},
+            {title : "Cookie Policy" , href:"/cookiepolicy"},
+            {title : "Terms & Conditions" , href:"/terms&conditions"},
+            {title : "Contact" , href:"/contact"},
     ]
   return (
     <div className='bg-[#393f52] text-white py-[30px] relative'>
@@ -67,7 +67,7 @@ const Footer = () => {
           y="9.46"
         />
         <text
-          fill="#e4002b"
+          fill="#ffffff"
           fontFamily="Serif"
           fontSize="25"
           fontWeight="bold"
@@ -111,7 +111,7 @@ const Footer = () => {
                     </ul>
             </div>
             <div className='flex justify-center pt-[25px] pb-[15px]'>
-              ©KFC, Inc. All rights reserved.
+              ©DFC, Inc. All rights reserved.
             </div>
             <div className="absolute mx-auto left-0 right-0 bottom-[0px] flex justify-center"><svg
   width="61"

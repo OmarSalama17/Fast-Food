@@ -1,24 +1,27 @@
 "use client"
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
+import ProductApi from '../_utils/ProductApi';
+import DFCLoader from './DFCLoader';
+import Loading from '../loading';
 export const Hero = () => {
   const [show, setShow] = useState(null);
-  const data = [
-    {
-      id: 1,
-      title:"Mix & Match" ,
-      description: "Mighty Zinger Sandwich + Rizo + Coleslaw+ Drink",
-      price: 250,
-      image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png",
-    },
-    {
-      id: 2,
-      title:"Mix & Mch" ,
-      description: "Mighty Zinger Sandwich + Rizo + Coleslaw+ Drink",
-      price: 250,
-      image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png",
-    }
-  ]
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [modalLoading, setModalLoading] = useState(false);
+
+  useEffect(()=>{
+    getLatestProducts_()
+  },[])
+  const getLatestProducts_ =  ()=> {
+    setTimeout(()=>{
+      ProductApi.getLatestProductsOffer().then(res =>{
+        console.log(res.data.data);
+        setData(res.data.data)
+        setLoading(false)
+        
+      })
+    },100)
+}
   return (
     <>
     <div className='flex justify-between'>
@@ -55,13 +58,34 @@ export const Hero = () => {
             </span>
         </p>
     </div>
-    <div className='container flex py-[20px]'>
+    <div className='container flex flex-wrap py-[20px]'>
       {
+          loading ? (
+    Array.from({ length: 4 }).map((_, idx) => (
+      <div
+        key={idx}
+        className="pt-[90px] px-[10px] pb-[20px] mt-[135px] relative mx-[15px] bg-white min-w-[250px] max-w-[250px] cart-radius animate-pulse"
+      >
+        <div className="w-[210px] h-[140px] bg-gray-300 rounded mb-4"></div>
+        <div className="h-4 bg-gray-300  rounded w-3/4 mb-2"></div>
+        <div className="h-3 bg-gray-200 rounded w-1/2 mb-4"></div>
+        <div className="h-6 bg-gray-300 rounded mb-4"></div>
+        <div className="h-8 bg-gray-200 rounded w-[140px]"></div>
+      </div>
+    ))
+  ) :(
         data.map((item) => {
           return (
-    <div key={item.id} onClick={()=>setShow(item)} className='pt-[90px] px-[10px] pb-[20px] mt-[135] relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
+    <div key={item.id} onClick={()=>{
+      setModalLoading(true);
+      setShow(null)
+      setTimeout(() => {
+      setModalLoading(false);
+      setShow(item)
+      }, 1000);
+    }} className='pt-[90px] px-[10px] pb-[20px] mt-[135] relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
         <div className='w-[210px] absolute top-[-115] right-[20px] '>
-                <img src={item.image}/>
+                <img />
         </div>
         <div className='flex justify-between'>
             <div>
@@ -101,16 +125,29 @@ export const Hero = () => {
 </p>
         </div>
         <div className='text-center bg-[#f1f3f6] rounded-md mb-[20px]'>
-                <p className='py-[10px] text-[12px] font-extrabold'>{item.price}</p>
+                <p className='py-[10px] text-[12px] font-extrabold'>{item.price} EGP</p>
         </div>
         <div className='absolute border-2 border-color bg-white rounded-lg  w-[140px] text-center justify-anchor-center'>
             <button className=' text-[12px] text-[#e4002b] py-[7px] px-[15px] font-extrabold '>ADD TO CART</button>
         </div>
     </div>
           )
-        })
+        }))
       }
       </div>
+            {modalLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-xl max-w-md w-full relative animate-pulse">
+            <div className="w-full h-48 bg-gray-300 mb-4 rounded"></div>
+            <div className="h-4 bg-gray-300 w-3/4 mb-2 rounded"></div>
+            <div className="h-3 bg-gray-200 w-1/2 mb-4 rounded"></div>
+            <div className="h-8 bg-gray-300 w-full rounded"></div>
+          </div>
+        </div>
+      )}
+                  {modalLoading && (
+<Loading/>
+      )}
       {show && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                 <div className="bg-white p-6 rounded-xl max-w-md w-full relative">

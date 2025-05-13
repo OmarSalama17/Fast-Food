@@ -1,7 +1,10 @@
-import fetchClient from './fetchClient';
+import axiosClient from './axiosClient';
 
-const getLatestProducts = () => fetchClient('/products');
+const getLatestProducts = () => axiosClient('/products');
+const getLatestProductsOffer = () => axiosClient('/products?filters[isOffer][$eq]=true&populate=*');
+
 
 export default {
   getLatestProducts,
+  getLatestProductsOffer
 };
