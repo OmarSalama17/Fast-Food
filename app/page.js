@@ -14,10 +14,8 @@ export default function Home() {
 return(
   <>
 <Landing/>
-<div className="container mt-[70px]">
 <Hero/>
 <Section/>
-</div>
   <Link href={"/product"}>product</Link>
   </>
 )

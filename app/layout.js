@@ -33,8 +33,8 @@ export default function RootLayout({ children }) {
 
         <ContextProvider>
         <Header/>
+        <div className='mt-[70px] relative'>
         <BootstrapProvider />
-        <div className='mt-[70px]'>
         <ClientLoader>
         {children}
         </ClientLoader>

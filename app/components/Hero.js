@@ -24,6 +24,9 @@ export const Hero = () => {
 }
   return (
     <>
+    {
+      show? <div className='over' onClick={()=> setShow(null)}></div> : ""
+    }
     <div className='flex justify-between'>
         <h2 className='flex items-center text-[16px]  font-bold'>
             <span className='border-b-2 border-color pb-[3px]'>Top</span> 
@@ -84,9 +87,15 @@ export const Hero = () => {
       setShow(item)
       }, 1000);
     }} className='pt-[90px] px-[10px] pb-[20px] mt-[135] relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
-        <div className='w-[210px] absolute top-[-115] right-[20px] '>
-                <img />
-        </div>
+          {
+            item.image.map ((img)=>{
+              return(
+                        <div key={img.id} className='w-[210px] absolute top-[-115] right-[20px] '>
+                <img src={img.url}/>
+                </div>
+              )
+            })
+          }
         <div className='flex justify-between'>
             <div>
                 <h3 className='pb-[10px] pr-[20px] text-[15px] font-bold'>{item.title}</h3>
@@ -149,20 +158,21 @@ export const Hero = () => {
 <Loading/>
       )}
       {show && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <>
+                <div className="fixed inset-0 flex justify-center items-center z-50" >
                 <div className="bg-white p-6 rounded-xl max-w-md w-full relative">
                   <button
                     className="absolute top-2 right-2 text-xl"
                     onClick={() => setShow(null)}
-                  >
+                    >
                     ❌
                   </button>
                   <h2 className="text-xl font-bold mb-2">{show.title}</h2>
                   <img
-                    src={show.image}
+                    src={show.url}
                     alt={show.title}
                     className="w-full h-48 object-cover rounded mb-4"
-                  />
+                    />
                   <p>{show.description}</p>
       
                   <button className="mt-4 bg-red-600 text-white px-4 py-2 rounded">
@@ -170,6 +180,7 @@ export const Hero = () => {
                   </button>
                 </div>
               </div>
+                    </>
       )
         
       }
