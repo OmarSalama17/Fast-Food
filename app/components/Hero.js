@@ -1,5 +1,5 @@
 "use client"
-import { motion, AnimatePresence } from "framer-motion"; // ضيف السطر ده فوق
+import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from 'react'
 import ProductApi from '../_utils/ProductApi';
 import Loading from '../loading';
@@ -58,7 +58,7 @@ export const Hero = () => {
             </span>
         </p>
     </div>
-    <div className='container flex flex-wrap py-[20px]'>
+    <div className='container flex flex-wrap gap-5 py-[20px]'>
       {
           loading ? (
     Array.from({ length: 4 }).map((_, idx) => (
@@ -83,13 +83,19 @@ export const Hero = () => {
       setModalLoading(false);
       setShow(item)
       }, 1000);
-    }} className='pt-[90px] px-[10px] pb-[20px] mt-[135px] relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
-        <div className='w-[210px] absolute top-[-115px] right-[20px] '>
-                <img />
-        </div>
+    }} className='pt-[90px] px-[10px] pb-[20px] mt-[135px]  relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
+            {
+              item.image.map((img)=>{
+                return(
+                        <div key={img.id} className='w-[210px] absolute top-[-115px] right-[20px] '>
+                            <img src={img.url}/>
+                        </div>
+                )
+              })
+            }
         <div className='flex justify-between'>
             <div>
-                <h3 className='pb-[10px] pr-[20px] text-[15px] font-bold'>{item.title}</h3>
+                <h3 className='pb-[10px] pr-[20px] text-[15px] font-bold text-[#393f52]'>{item.title}</h3>
             </div>
             <div>
             <svg
@@ -125,7 +131,7 @@ export const Hero = () => {
 </p>
         </div>
         <div className='text-center bg-[#f1f3f6] rounded-md mb-[20px]'>
-                <p className='py-[10px] text-[12px] font-extrabold'>{item.price} EGP</p>
+                <p className='py-[10px] text-[12px] font-extrabold text-[#393f52]'>{item.price} EGP</p>
         </div>
         <div className='absolute border-2 border-color bg-white rounded-lg  w-[140px] text-center justify-anchor-center'>
             <button className=' text-[12px] text-[#e4002b] py-[7px] px-[15px] font-extrabold '>ADD TO CART</button>
@@ -135,21 +141,6 @@ export const Hero = () => {
         }))
       }
       </div>
-            {modalLoading && (
-        <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }} 
-        transition={{ duration: 0.3 }}
-        className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <motion.div className="bg-white p-6 rounded-xl max-w-md w-full relative animate-pulse">
-            <div className="w-full h-48 bg-gray-300 mb-4 rounded"></div>
-            <div className="h-4 bg-gray-300 w-3/4 mb-2 rounded"></div>
-            <div className="h-3 bg-gray-200 w-1/2 mb-4 rounded"></div>
-            <div className="h-8 bg-gray-300 w-full rounded"></div>
-          </motion.div>
-        </motion.div>
-      )}
                   {modalLoading && (
 <Loading/>
       )}
