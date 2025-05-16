@@ -6,6 +6,7 @@ export default async function Product (){
             cache: "no-store",
         });
         const data = await res.json();
+
     console.log(data.data);
     console.log(data.data[0].sizes);
     console.log(data.data[0].sizes[0].size[0]);

@@ -1,5 +1,4 @@
 'use client';
-import { motion, AnimatePresence } from "framer-motion"; // ضيف السطر ده فوق
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react'
@@ -11,8 +10,6 @@ const ProductList = ({data}) => {
     const searchParams = useSearchParams()
     const productId = searchParams.get("product")
     const {setLoader} = useGlobalContext()
-    const [modalLoading, setModalLoading] = useState(false);
-    
     useEffect(()=>{
         if (productId) {
             const found = data.data.find(data => data.documentId.toString() === productId)

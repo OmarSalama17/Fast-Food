@@ -56,6 +56,12 @@ body {
 .shadow-card{
   box-shadow: 0 4px 2px #d9dde6cc;
 }
+.bg-linear{
+  background: linear-gradient(95.85deg, #e50f39 27.81%, #ff4065 49.59%, #e50f39 59.77%);
+}
+.shadow-head{
+      box-shadow: 0 4px 4px #e7ecf3;
+}
 /* swiper*/
 .swiper {
   width: 100%;
@@ -66,8 +72,6 @@ body {
   text-align: center;
   font-size: 18px;
   background: #fff;
-
-  /* Center slide text vertically */
   display: flex;
   justify-content: center;
   align-items: center;

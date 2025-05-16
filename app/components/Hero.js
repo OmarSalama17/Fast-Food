@@ -3,25 +3,31 @@ import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from 'react'
 import ProductApi from '../_utils/ProductApi';
 import Loading from '../loading';
-export const Hero = () => {
-  const [show, setShow] = useState(null);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [modalLoading, setModalLoading] = useState(false);
+import ProductModal from "./ProductModal/ProductModal";
+import { useRouter, useSearchParams } from 'next/navigation';
 
-  useEffect(()=>{
-    getLatestProducts_()
-  },[])
-  const getLatestProducts_ =  ()=> {
-    setTimeout(()=>{
-      ProductApi.getLatestProductsOffer().then(res =>{
-        console.log(res.data.data);
-        setData(res.data.data)
-        setLoading(false)
-        
-      })
-    },100)
+export  function Hero ({dataFilter}){
+  const [loading, setLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const productId = searchParams.get("product")
+const data = dataFilter.data 
+useEffect(()=>{
+  if(productId){
+    const product = data.find(item => item.documentId.toString() === productId)
+    setSelectedProduct(product)
+     console.log(selectedProduct);
+  }else{
+    setSelectedProduct(null)
+  }
+},[productId , data])
+const openModal =(product)=>{
+  router.push(`?product=${product.documentId}`)
 }
+    const closeModal = ()=>{
+        router.push('?')
+    }
   return (
     <>
     <div className='flex justify-between'>
@@ -76,14 +82,7 @@ export const Hero = () => {
   ) :(
         data.map((item) => {
           return (
-    <div key={item.id} onClick={()=>{
-      setModalLoading(true);
-      setShow(null)
-      setTimeout(() => {
-      setModalLoading(false);
-      setShow(item)
-      }, 1000);
-    }} className='pt-[90px] px-[10px] pb-[20px] mt-[135px]  relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
+    <div key={item.id} onClick={()=> openModal(item)} className='pt-[90px] px-[10px] pb-[20px] mt-[135px]  relative bg-white min-w-[250px] max-w-[250px] cart-radius '>
             {
               item.image.map((img)=>{
                 return(
@@ -141,48 +140,10 @@ export const Hero = () => {
         }))
       }
       </div>
-                  {modalLoading && (
-<Loading/>
-      )}
-      <AnimatePresence>
-
-      {show && (
-                <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }} 
-                transition={{ duration: 0.3 }}
-                className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50" onClick={()=> setShow(null)}>
-                <motion.div 
-                        initial={{ scale: 0.8 }} 
-                        animate={{ scale: 1 }} 
-                        exit={{ scale: 0.8 }} 
-                        transition={{ duration: 0.3 }} 
-                className="bg-white p-6 rounded-xl max-w-md w-full relative" onClick={(e)=> e.stopPropagation()}>
-                  <button
-                    className="absolute top-2 right-2 text-xl"
-                    onClick={() => setShow(null)}
-                    >
-                    ❌
-                  </button>
-                  <h2 className="text-xl font-bold mb-2">{show.title}</h2>
-                  <img
-                    src={show.url}
-                    alt={show.title}
-                    className="w-full h-48 object-cover rounded mb-4"
-                    />
-                  <p>{show.description}</p>
+      {
       
-                  <button className="mt-4 bg-red-600 text-white px-4 py-2 rounded">
-                    Add to Cart
-                  </button>
-                </motion.div>
-              </motion.div>
-      )
-        
+        selectedProduct ? <ProductModal product={selectedProduct} onClose={closeModal}/> : ""
       }
-      </AnimatePresence>
-
       </>
   )
 }
