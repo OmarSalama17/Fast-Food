@@ -12,7 +12,7 @@ export  function Hero ({dataFilter}){
   const router = useRouter()
   const searchParams = useSearchParams()
   const productId = searchParams.get("product")
-const data = dataFilter.data 
+const data = dataFilter.results
 useEffect(()=>{
   if(productId){
     const product = data.find(item => item.documentId.toString() === productId)

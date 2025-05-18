@@ -12,7 +12,7 @@ const ProductList = ({data}) => {
     const {setLoader} = useGlobalContext()
     useEffect(()=>{
         if (productId) {
-            const found = data.data.find(data => data.documentId.toString() === productId)
+            const found = data.results.find(data => data.documentId.toString() === productId)
             setSelectedProduct(found || null)
         }else{
             setSelectedProduct(null)
@@ -32,7 +32,7 @@ return (
     <>
         <div className='container flex flex-wrap gap-5 py-[20px]'>
 {
-        data.data.map((item) => {
+        data.results.map((item) => {
         return (
     <div key={item.id}
     onClick={()=> {
@@ -88,7 +88,7 @@ return (
         <div className='p-[5px] bg-[#f0f4fa] rounded-md mb-[20px]'>
             <div className="flex justify-between items-center">
 
-                <p className=' text-[12px] font-extrabold text-[#393f52]'>{item.price} EGP</p>
+                <p className=' text-[12px] font-extrabold text-[#393f52]'>{item.price}.00 EGP</p>
                 <div className='flex items-center bg-[white] py-[7px] px-[5px] rounded-md'>
                 <span className="text-[10px] mr-[5px] text-[#007aff] font-bold">CUSTOMIZE</span>
             <div className=" bg-[#007aff] rounded-md text-[white]">
