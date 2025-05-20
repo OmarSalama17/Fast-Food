@@ -71,7 +71,6 @@ body {
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -200,7 +199,6 @@ body {
 }
 
 .circle-box {
-  background: #fff;
   border: 2px solid #f8dede;
   border-radius: 50%;
   width: 180px;
@@ -215,8 +213,6 @@ body {
 }
 
 .circle-box img {
-  width: 90px;
-  height: 90px;
   object-fit: contain;
   border-radius: 50%;
   margin-bottom: 10px;
@@ -231,4 +227,10 @@ body {
 .swiper-button-next,
 .swiper-button-prev {
   color: #007aff;
+}
+.swiper-wrapper {
+  justify-content: space-evenly;
+}
+.filter-shadow{
+  box-shadow: 0 2.17631px 7.61708px #9bccf43e;
 }
