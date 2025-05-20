@@ -12,6 +12,8 @@ const ProductList = ({data}) => {
     const searchParams = useSearchParams()
     const productId = searchParams.get("product") 
     const {setLoader} = useGlobalContext()
+    console.log(data);
+    
     useEffect(()=>{
         if (productId) {
             const found = data.results.find(data => data.documentId.toString() === productId)

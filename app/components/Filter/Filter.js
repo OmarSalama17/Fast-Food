@@ -8,10 +8,10 @@ const Filter = () => {
     const selectedType = searchParams.get("type")
     const filter = [
     { label: "ALL", value: "" },
-    { label: "Deal Meals",    value: "deals" },
-    { label: "Exclusive Offers", value: "offers" },
+    { label: "Deal Meals",    value: "deal-meals" },
+    { label: "Exclusive Offers", value: "exclusive-offers" },
     { label: "For One",       value: "for-one" },
-    { label: "For Sharing",   value: "sharing" },
+    { label: "For Sharing",   value: "for-sharing" },
     { label: "Sides & Desserts", value: "sides-desserts" },
     { label: "Beverages",     value: "beverages" },
     { label: "My Favorites",  value: "favorites" },
