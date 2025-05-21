@@ -1,19 +1,19 @@
 "use client";
 
+import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { useState } from "react";
-import { useGlobalContext } from "../Context-Api/Context-Api";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
+    const pathname = usePathname();
 
-const {count,setCount}= useGlobalContext()
-const Handel= ()=>{
-  setCount(count + 1)
-}
-const ctx = useGlobalContext();
-console.log(ctx);
+  const isSignInPage = pathname.includes("sign-in") || pathname.includes("sign-up"); 
 
-  return (
+  if (isSignInPage) return null;
+const {user} = useUser()
+  return  (
     <>
     <header className="bg-white py-[14px] fixed top-0 left-0 w-full z-30 shadow-nav  ">
       <div className="container mx-auto flex justify-between items-center relative z-50">
@@ -124,9 +124,14 @@ console.log(ctx);
           <div className="flex justify-center items-center bg-[#fef7f8] border border-color rounded-md h-[43px] hover:bg-[#e4002b] text-[#e4002b] hover:text-white transition duration-300 ">
           <a href="#" className="px-[16px] py-[6px] font-bold">عربي</a>
           </div>
-          <div className="flex rounded-md h-[43px] bg-[#e4002b] justify-center items-center shadow-hover hover:bg-[#9f001e] transition duration-300 ">
-            <a href="#" className="px-[16px] text-[11px]  text-white py-[6px] font-extrabold">LOGIN</a>
+          {
+            !user ?
+                      <div className="flex rounded-md h-[43px] bg-[#e4002b] justify-center items-center shadow-hover hover:bg-[#9f001e] transition duration-300 ">
+            <Link href="/sign-in" className="px-[16px] text-[11px]  text-white py-[6px] font-extrabold">LOGIN</Link>
             </div>
+            :
+            <UserButton/>
+          }
         </div>
       </div>
     </header>

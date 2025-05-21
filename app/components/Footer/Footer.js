@@ -1,4 +1,7 @@
 "use client"
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
+
 import React from 'react'
 
 const Footer = () => {
@@ -11,7 +14,13 @@ const Footer = () => {
             {title : "Terms & Conditions" , href:"/terms&conditions"},
             {title : "Contact" , href:"/contact"},
     ]
-  return (
+    const [isLoggedIn , setIsLoggedIn] = useState(false);
+    useEffect(()=>{
+    setIsLoggedIn(window.location.href.toString().includes("sign-in"))
+    },[])
+    const {user} = useUser()
+
+  return !isLoggedIn && (
     <div className='bg-[#393f52] text-white py-[30px] relative'>
         <div className='container'>
             <div className='flex flex-col justify-center items-center'>

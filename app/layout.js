@@ -7,8 +7,7 @@ import Landing from "./components/Landing/Landing.js";
 import ContextProvider from './components/Context-Api/Context-Api';
 import Footer from './components/Footer/Footer';
 import ClientLoader from './components/ClientLoader/ClientLoader';
-
-
+import {ClerkProvider} from '@clerk/nextjs'
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,6 +25,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
 
         <ContextProvider>
         <Header/>
-        <div className='mt-[70px] relative'>
+        <div className=' relative'>
         <BootstrapProvider />
         <ClientLoader>
         {children}
@@ -43,5 +43,6 @@ export default function RootLayout({ children }) {
         </ContextProvider>
       </body>
     </html>
+    </ClerkProvider>
   );
 }
