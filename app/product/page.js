@@ -31,8 +31,6 @@ export default async function Product({ searchParams }) {
 
   return (
     <>
-
-
       <main>
         <Filter />
         <ProductList data={data} />

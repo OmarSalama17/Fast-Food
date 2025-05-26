@@ -6,13 +6,16 @@ import ProductModal from '../ProductModal/ProductModal';
 import {useGlobalContext} from '../Context-Api/Context-Api';
 import Cart from '../Cart/Cart';
 import ButtonWishlist from '../ButtonWishlist/ButtonWishlist';
+import { useUser } from '@clerk/nextjs';
+import CartApis from "../../_utils/cartApis"
 const ProductList = ({data}) => {
+    const {user} = useUser()
     const [selectedProduct , setSelectedProduct] = useState(null)
     const router = useRouter()
     const searchParams = useSearchParams()
     const productId = searchParams.get("product") 
     const {setLoader} = useGlobalContext()
-    console.log(data);
+    const {cart , setCart} = useGlobalContext()
     
     useEffect(()=>{
         if (productId) {
@@ -31,6 +34,32 @@ const ProductList = ({data}) => {
     }
     const closeModal = ()=>{
         router.push('?')
+    }
+
+    const handleCart = (product)=>{
+        if (!user) {
+            router.push('/sign-in')
+        }else{
+            const data = {
+                data:{
+                    userName:user.fullName,
+                    email: user.primaryEmailAddress.emailAddress,
+                    products:[product.documentId]
+                }
+            }
+            CartApis.addToCart(data).then(res=>{
+                console.log("cart added");
+                setCart(oldCart => [
+                    ...oldCart,
+                    {
+                        id: res.data.data.documentId,
+                        product
+                    }
+                ])
+            }).catch(error=>{
+                console.log("error",error);
+            })
+        }
     }
 return (
     <>
@@ -76,13 +105,12 @@ return (
         </div>
             </div>
                 <div className='absolute border-2 border-color bottom-[-15px] bg-white rounded-lg  w-[140px] text-center justify-anchor-center'>
-            <button onClick={()=> {openModal(item)}} className=' text-[12px] text-[#e4002b]  py-[7px] px-[15px] font-extrabold '>ADD TO CART</button>
+            <button onClick={()=> handleCart(item)}  className=' text-[12px] text-[#e4002b]  py-[7px] px-[15px] font-extrabold '>ADD TO CART</button>
         </div>
     </div>
         )
         })}
             </div>
-            <Cart/>
 
     </div>
 

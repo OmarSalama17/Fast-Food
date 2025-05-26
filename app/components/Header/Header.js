@@ -4,15 +4,34 @@ import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-
+import { useGlobalContext } from "../Context-Api/Context-Api";
+import CartApis from "../../_utils/cartApis"
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
+    const isSignInPage = pathname.includes("sign-in") || pathname.includes("sign-up"); 
+  const {cart , setCart } = useGlobalContext()  
+  const {user} = useUser()
+  useEffect(()=>{
+    user&&getCartItems();
+  },[user])
+  const getCartItems = ()=>{
+    CartApis.getUserCartItems(user.primaryEmailAddress.emailAddress).then(res=>{
+      console.log('res from cart' , res.data.data);
+res.data.data.forEach(cartItem => {
+    const product = cartItem.products[0];
 
-  const isSignInPage = pathname.includes("sign-in") || pathname.includes("sign-up"); 
-
+    setCart(oldCart => [
+        ...oldCart,
+        {
+            id: cartItem.id,
+            product,
+        }
+    ]);
+});
+})
+  }
   if (isSignInPage) return null;
-const {user} = useUser()
   return  (
     <>
     <header className="bg-white py-[14px] fixed top-0 left-0 w-full z-30 shadow-nav  ">
@@ -101,7 +120,7 @@ const {user} = useUser()
     </a>
         </div>
         <div className="flex gap-4 items-center">
-          <div className="relative">
+          <Link href='/cart' className="relative">
           <svg
           className="text-[1.7rem] text-[red]"
       stroke="currentColor"
@@ -118,9 +137,9 @@ const {user} = useUser()
       </g>
           </svg>
           <div className="absolute grid text-xs h-[18px] w-[18px] font-bold right-[-5px] place-items-center top-[-5px] bg-red-500 rounded-[27px]">
-            0
+            {cart.length}
           </div>
-          </div>
+          </Link>
           <div className="flex justify-center items-center bg-[#fef7f8] border border-color rounded-md h-[43px] hover:bg-[#e4002b] text-[#e4002b] hover:text-white transition duration-300 ">
           <a href="#" className="px-[16px] py-[6px] font-bold">عربي</a>
           </div>

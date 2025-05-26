@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
 
         <ContextProvider>
         <Header/>
-        <div className=' relative'>
+        <div className='relative'>
         <BootstrapProvider />
         <ClientLoader>
         {children}

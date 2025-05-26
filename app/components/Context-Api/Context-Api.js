@@ -5,10 +5,10 @@ import React from 'react'
 const GlobalContext= createContext()
 
 const ContextProvider = ({children}) => {
-const [count , setCount]= useState(0)
+const [cart , setCart]= useState([])
 const [loader , setLoader] = useState(false)
   return (
-<GlobalContext.Provider value={{count , setCount , setLoader}}>
+<GlobalContext.Provider value={{cart , setCart , setLoader}}>
 {children}
 {
   loader &&(
