@@ -1,9 +1,25 @@
 const { default: axiosClient } = require("./axiosClient");
 
-const addToCart = (payload)=> axiosClient.post('/carts', payload );
-const getUserCartItems = (email)=>axiosClient.get(`/carts?populate[products][populate]=image&filters[email][$eq]=${email}`)
+const getCart = (userEmail) => 
+  axiosClient.get(`/carts?filters[user_email][$eq]=${userEmail}&populate[items][populate][product][populate]=image`);
+
+const addCart = (userEmail) =>
+  axiosClient.post('/carts', {
+    data:{
+      user_email: userEmail ,
+      items:[]
+    }
+  });
+
+const updateCart = (cartId, updatedItems) =>
+  axiosClient.put(`/carts/${cartId}`, {
+    data: {
+      items: updatedItems,
+    },
+  });
 
 export default {
-    addToCart,
-    getUserCartItems,
+  getCart,
+  updateCart,
+  addCart,
 };

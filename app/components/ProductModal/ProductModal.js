@@ -1,8 +1,71 @@
+"use client"
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter} from 'next/navigation';
+import {useGlobalContext} from '../Context-Api/Context-Api';
+import { useUser } from '@clerk/nextjs';
+import CartApis from '../../_utils/cartApis';
 import React from 'react'
 
 const ProductModal = ({product,onClose}) => {
+    const router = useRouter()
+        const {cart , setCart , setLoader} = useGlobalContext()
+    const {user} = useUser()
+const getUserCart = async (userEmail) => {
+  const res = await CartApis.getCart(userEmail);
+  if (res.data.data.length > 0) {
+    return res.data.data[0];
+  } else {
+    const createRes = await axiosClient.post(`/carts`, {
+      data: {
+        user_email: userEmail,
+        items: [],
+      },
+    });
+    return createRes.data.data;
+  }
+};
 
+    const addToCart = async (productId, userEmail) => {
+          if (!user) {
+    router.push ("/sign-in")
+  }
+      setLoader(true)
+      const cart = await getUserCart(userEmail);
+      const oldItems = cart.items || [];
+    
+      const existingItem = oldItems.find((item) => {
+        const currentDocId = item.product?.documentId;
+        return currentDocId === productId;
+      });
+    
+      let newItems = [];
+    
+      if (existingItem) {
+        newItems = oldItems.map((item) => {
+          const currentDocId = item.product?.documentId;
+          return {
+            product: { connect: [currentDocId] },
+            quantity: currentDocId === productId ? item.quantity + 1 : item.quantity,
+          };
+        });
+      } else {
+        newItems = [
+          ...oldItems.map((item) => ({
+            product: { connect: [item.product?.documentId] },
+            quantity: item.quantity,
+          })),
+          {
+            product: { connect: [productId] },
+            quantity: 1,
+          },
+        ];
+      }
+      await CartApis.updateCart(cart.documentId , newItems);
+      const updatedCartRes = await CartApis.getCart(userEmail);
+      const updatedCart = updatedCartRes.data.data[0];
+      setCart(updatedCart);
+      setLoader(false)
+    };
     
   return (
     <AnimatePresence>
@@ -83,7 +146,7 @@ const ProductModal = ({product,onClose}) => {
                                     <p className="font-bold text-[14px] text-start">{product.price}.00 EGP</p>
                                     <p className="text-[8px] font bold">* All prices are VAT Inclusive</p>
                                     </div>
-                                    <button className="flex  font-bold ">Add to cart <p><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" className="text-[23px] ml-[10px] bg-[white] text-[black] rounded-2xl  _chevron_wyjg5_134" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/></svg></p></button>
+                                    <button onClick={()=> addToCart(product.documentId, user?.primaryEmailAddress?.emailAddress)} className="flex  font-bold ">Add to cart <p><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" className="text-[23px] ml-[10px] bg-[white] text-[black] rounded-2xl  _chevron_wyjg5_134" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/></svg></p></button>
                                     </div>
                                 </div>
                             </div>

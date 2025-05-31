@@ -9,14 +9,13 @@ import ButtonWishlist from '../ButtonWishlist/ButtonWishlist';
 import { useUser } from '@clerk/nextjs';
 import CartApis from "../../_utils/cartApis"
 const ProductList = ({data}) => {
+    const { default: axiosClient } = require("../../_utils/axiosClient");
     const {user} = useUser()
     const [selectedProduct , setSelectedProduct] = useState(null)
     const router = useRouter()
     const searchParams = useSearchParams()
     const productId = searchParams.get("product") 
-    const {setLoader} = useGlobalContext()
-    const {cart , setCart} = useGlobalContext()
-    
+    const {cart , setCart , setLoader} = useGlobalContext()
     useEffect(()=>{
         if (productId) {
             const found = data.results.find(data => data.documentId.toString() === productId)
@@ -36,41 +35,70 @@ const ProductList = ({data}) => {
         router.push('?')
     }
 
-    const handleCart = (product)=>{
-        if (!user) {
-            router.push('/sign-in')
-        }else{
-            const data = {
-                data:{
-                    userName:user.fullName,
-                    email: user.primaryEmailAddress.emailAddress,
-                    products:[product.documentId]
-                }
-            }
-            CartApis.addToCart(data).then(res=>{
-                console.log("cart added");
-                setCart(oldCart => [
-                    ...oldCart,
-                    {
-                        id: res.data.data.documentId,
-                        product
-                    }
-                ])
-            }).catch(error=>{
-                console.log("error",error);
-            })
-        }
-    }
+const getUserCart = async (userEmail) => {
+  const res = await CartApis.getCart(userEmail);
+
+  if (res.data.data.length > 0) {
+    return res.data.data[0];
+  } else {
+    const createRes = await CartApis.addCart(userEmail);
+    return createRes.data.data;
+  }
+};
+
+const addToCart = async (productId, userEmail) => {
+  if (!user) {
+    router.push ("/sign-in")
+  }
+  setLoader(true)
+  const cart = await getUserCart(userEmail);
+  const oldItems = cart.items || [];
+
+  const existingItem = oldItems.find((item) => {
+    const currentDocId = item.product?.documentId;
+    return currentDocId === productId;
+  });
+
+  let newItems = [];
+
+  if (existingItem) {
+    newItems = oldItems.map((item) => {
+      const currentDocId = item.product?.documentId;
+      return {
+        product: { connect: [currentDocId] },
+        quantity: currentDocId === productId ? item.quantity + 1 : item.quantity,
+      };
+    });
+  } else {
+    newItems = [
+      ...oldItems.map((item) => ({
+        product: { connect: [item.product?.documentId] },
+        quantity: item.quantity,
+      })),
+      {
+        product: { connect: [productId] },
+        quantity: 1,
+      },
+    ];
+  }
+  await CartApis.updateCart(cart.documentId , newItems);
+  const updatedCartRes = await CartApis.getCart(userEmail);
+  const updatedCart = updatedCartRes.data.data[0];
+  setCart(updatedCart);
+  setLoader(false)
+};
+
+
 return (
     <>
         <div className='container flex flex-wrap gap-5 py-[20px]'>
-            <div className='flex flex-wrap flex-1 gap-[49px]'>
+            <div className='flex flex-wrap h-[100%] flex-1 gap-[49px]'>
 {
         data.results.map((item) => {
         return (
     <div key={item.id}
     
-    className='flex flex-col justify-around pt-[90px]  px-[10px] pb-[20px] mt-[135px]  relative bg-white min-w-[250px] max-w-[250px] cart-radius shadow-card '>
+    className='flex flex-col  justify-around pt-[90px]  px-[10px] pb-[20px] mt-[135px]  relative bg-white min-w-[250px] max-w-[250px] cart-radius shadow-card ' >
             {
                 item.image.map((img) =>{
                     return(
@@ -105,13 +133,13 @@ return (
         </div>
             </div>
                 <div className='absolute border-2 border-color bottom-[-15px] bg-white rounded-lg  w-[140px] text-center justify-anchor-center'>
-            <button onClick={()=> handleCart(item)}  className=' text-[12px] text-[#e4002b]  py-[7px] px-[15px] font-extrabold '>ADD TO CART</button>
+            <button onClick={() => addToCart(item.documentId, user?.primaryEmailAddress?.emailAddress)}  className=' text-[12px] text-[#e4002b]  py-[7px] px-[15px] font-extrabold '>ADD TO CART</button>
         </div>
     </div>
         )
         })}
             </div>
-
+            <Cart/>
     </div>
 
     {

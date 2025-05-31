@@ -2,10 +2,8 @@ import React from 'react'
 
 const Loading = () => {
   return (
-        <>
-
       <div className="dfc-loader">
-        <div className="box k">
+        <div className="box d">
           <img src="https://res.cloudinary.com/dr2dnmx76/image/upload/v1747102204/svgviewer-png-output_xj8gan.png" alt="image 1" />
         </div>
         <div className="box f">
@@ -15,7 +13,6 @@ const Loading = () => {
           <img src="https://res.cloudinary.com/dr2dnmx76/image/upload/v1747102204/svgviewer-png-output_2_midycf.png" alt="image 3" />
         </div>
       </div>
-        </>
   )
 }
 

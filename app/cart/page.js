@@ -1,20 +1,50 @@
 "use client"
-import Link from 'next/link'
 import {useGlobalContext} from '../components/Context-Api/Context-Api';
+import { useUser } from "@clerk/nextjs";
+import cartApis from '../_utils/cartApis';
 import React, { useState } from 'react'
+import Coupon from '../components/Coupon/Coupon';
 
 const Cart = () => {
     const [open , setOpen] = useState(false)
-          const {cart , setCart} = useGlobalContext()
+          const {cart , setCart , setLoader} = useGlobalContext()
+            const { user } = useUser();
+const userEmail = user?.primaryEmailAddress?.emailAddress;
+
+  const updateQuantity = async (item, newQuantity) => {
+    setLoader(true)
+    const cartId = cart?.documentId;
+    if (!cartId) return;
+    let updatedItems;
+    if (newQuantity < 1) {
+      updatedItems = cart.items
+        .filter((i) => i.id !== item.id)
+        .map((i) => ({
+          product: { connect: [i.product?.documentId] },
+          quantity: i.quantity,
+        }));
+    } else {
+      updatedItems = cart.items.map((i) => ({
+        product: { connect: [i.product?.documentId] },
+        quantity: i.id === item.id ? newQuantity : i.quantity,
+      }));
+    }
+    await cartApis.updateCart(cartId, updatedItems);
+    const updatedCartRes = await cartApis.getCart(userEmail);
+    const updatedCart = updatedCartRes.data.data[0];
+    setCart(updatedCart);
+    setLoader(false)
+  };
+
           const getTotal = (dev) =>{
             let total = 0
             if (dev) {
-                cart.forEach(item =>{
+                cart?.items?.forEach(item =>{
               total += item.product.price
             })
             return total + dev
             }else{
-                cart.forEach(item =>{
+                cart?.items?.forEach(item =>{
               total += item.product.price 
             })
             return total
@@ -26,20 +56,20 @@ const Cart = () => {
   <div className="flex flex-wrap justify-between">
     <div className="w-full  md:w-[66%] bg-white rounded-xl shadow-custom">
     <div className='p-[20px] border-b-1'>
-        <h1 className='text-[20px] font-bold text-[#393f52] relative'>Cart 4 Items <span className='w-[60px] h-[3px] bottom-[-20px] left-[0] bg-[red] absolute'></span></h1>
+        <h1 className='text-[20px] font-bold text-[#393f52] relative'>Cart {cart?.items ? cart?.items?.reduce((total, item) => total + item.quantity,0) : ""} {cart?.items ? "items" : ""} <span className='w-[60px] h-[3px] bottom-[-20px] left-[0] bg-[red] absolute'></span></h1>
     </div>
     <div className='p-[20px]'>
     <div className='p-[20px] bg-[#ecf1f5] flex flex-col gap-4'>
         {
-          cart.map((item)=>{
+          cart?.items?.map((item)=>{
             return( 
                       <div className='flex items-center p-[20px] gap-[4%] bg-white shadow-custom rounded-lg'>
             <div className='w-full font-bold'>{item.product.title}</div>
             <div className='font-bold'>{item.product.price}.00EGP</div>
             <div className='flex justify-center items-center gap-[10px]'>
-                <button className='w-[36px] h-[36px] bg-white border rounded-md shadow-custom font-bold'>-</button>
-                <div className='font-bold'>2</div>
-                <button className='w-[36px] h-[36px] bg-[red] border rounded-md shadow-custom font-bold text-white'>+</button>
+                <button onClick={()=> updateQuantity(item , item.quantity - 1)} className='w-[36px] h-[36px] bg-white border rounded-md shadow-custom font-bold'>-</button>
+                <div className='font-bold'>{item.quantity}</div>
+                <button onClick={()=> updateQuantity(item , item.quantity + 1)} className='w-[36px] h-[36px] bg-[red] border rounded-md shadow-custom font-bold text-white'>+</button>
             </div>
             <div className='margin-block'><img className='!w-[90px] h-[90px] max-w-none' src={item.product.image[0].url}/></div>
         </div>
@@ -165,30 +195,7 @@ const Cart = () => {
   </div>
   {
     open ? (
-<div onClick={()=> setOpen(false)} className="fixed inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center z-1000">
-                    <div className="flex justify-center items-center font-extrabold rounded-xl cursor-pointer mb-[40px] text-[20px]  w-[35px] h-[35px] text-[#393f52] bg-[white]"><p>×</p></div>
-  <div onClick={(e)=> e.stopPropagation()} className="bg-[#f1f3f6] rounded-3xl shadow-lg w-[375px]">
-    <div className='p-8 bg-white rounded-t-3xl'>
-    <h1 className="text-center text-[16px] text-[#393f52] font-bold relative pb-[7px]">Offers <span className='absolute w-[30px] left-[140px] rounded-full bottom-[0px] h-[4px] bg-[red]'></span></h1>
-    <p className="text-center text-[14px]">Select one of the amazing offers below.</p>
-    </div>
-    <div className=''>
-        <div className='p-[12px] bg-white mt-[15px]'>
-        <div className='bg-[#f1f3f6] flex py-[10px] px-[5px]  border-1 border-dashed border-[#aaadb7]'>
-        <input type='text'placeholder='Enter your coupon code here' className='focus:outline-none bg-transparent w-full'/>
-        <span className='cursor-pointer text-[red]'>APPLY</span>
-        </div>
-        </div>
-        <div className='flex flex-col items-center w-full gap-[15px] bg-[#f1f3f6] px-[16px] pb-[30px] rounded-b-3xl'>
-            <img src='/noOffer-12378fe1.png' className='w-[205px]'/>
-            <h2 className='font-bold text-[18px]'>No Deals & Offers!</h2>
-            <div className='bg-[red] w-[100%] flex justify-center items-center'>
-                <Link href="/product" className="py-[15px] px-[8px] font-bold text-[12px] text-white">EXPLORE DFC MENU</Link>
-            </div>
-        </div>
-    </div>
-  </div>
-</div>
+      <Coupon  open={open} setOpen={setOpen} />
     ): ""
   }
 
