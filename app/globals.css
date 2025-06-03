@@ -18,15 +18,9 @@
   font-display: swap;
 }
 
-
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
-
+a {
+  text-decoration: none !important;
+}
 body {
   color: #171717;
   background: #f1f3f6;
