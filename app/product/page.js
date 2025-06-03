@@ -3,7 +3,7 @@ import Filter from "../components/Filter/Filter";
 import ProductList from "../components/ProductList/ProductList";
 
 export async function generateMetadata({ searchParams }) {
-    const params = await searchParams 
+    const params =  searchParams 
   const type = params.type || "All Products";;
 
   return {
@@ -18,12 +18,12 @@ export async function generateMetadata({ searchParams }) {
 export const revalidate = 60;
 
 export default async function Product({ searchParams }) {
-    const params = await searchParams
+    const params =  searchParams
   const type = params.type;
 
   const apiUrl = type
-    ? `http://localhost:1337/api/products?filters[type][$eq]=${type}&populate=*`
-    : `http://localhost:1337/api/products?populate=*`;
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api/products?filters[type][$eq]=${type}&populate=*`
+    : `${process.env.NEXT_PUBLIC_API_URL}/api/products?populate=*`;
 
   const res = await fetch(apiUrl, {
     next: { revalidate: 60 }, 
