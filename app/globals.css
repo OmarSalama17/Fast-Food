@@ -23,9 +23,9 @@ p{
 a {
   text-decoration: none !important;
 }
-body {
+body{
   color: #171717;
-  background: #f1f3f6;
+  background: #f1f3f6 !important;
   font-family: 'Rubik' , sans-serif;
 }
 .shadow-hover:hover{
