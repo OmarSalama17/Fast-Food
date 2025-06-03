@@ -10,9 +10,9 @@ import Link from "next/link";
 
 const categories = [
   { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1747156795/296_combo_1667c67bec.png", title: "EXCLUSIVE OFFERS", badge: true , href:""},
-  { image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png", title: "FOR ONE" , href:""},
-  { image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png", title: "FOR SHARING" , href:""},
-  { image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png", title: "SIDES & DESSERTS" , href:""},
+  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1748900681/295_combo_82261a8c86.png", title: "FOR ONE" , href:""},
+  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1748900706/CITYPNG_COM_Crispy_Chicken_Nuggets_on_Plate_with_ketchup_HD_PNG_2000x2000_6026252b64.png", title: "FOR SHARING" , href:""},
+  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1748900710/CITYPNG_COM_Hot_Dog_with_Herbs_and_Sauce_on_a_Wooden_Plate_HD_PNG_2000x2000_48d3e26f0b.png", title: "SIDES & DESSERTS" , href:""},
   { image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png", title: "BEVERAGES" , href:""},
 ];
 
@@ -22,7 +22,7 @@ const CategorySlider = () => {
       <h3 className="flex relative items-center justify-between my-[30px] mt-[50px] font-bold ">
         <span className="absolute bottom-[-2px] bg-red w-[33px] h-[2px]"></span>
         <span className="flex items-center">EXPLORE MENU <img className="ml-[8px]" src="https://egypt.kfc.me/assets/explore-menu-950b8776.png" width={20}/></span>
-                <p className='text-[#007aff] font-bold flex items-center'> View All 
+                <Link href={"/product"} className='text-[#007aff] font-bold flex items-center'> View All 
             <span className='ml-[7px]'>
                 <svg
   stroke="currentColor"
@@ -46,7 +46,7 @@ const CategorySlider = () => {
   />
                 </svg>
             </span>
-        </p>
+        </Link>
       </h3>
       <div className="absolute left-0 top-1/2 z-10 -translate-y-1/2">
         <div className="swiper-button-prev-custom   cursor-pointer  rounded-full p-2">

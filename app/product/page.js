@@ -15,6 +15,7 @@ export async function generateMetadata({ searchParams }) {
     },
   };
 }
+export const revalidate = 60;
 
 export default async function Product({ searchParams }) {
     const params = await searchParams
@@ -25,7 +26,7 @@ export default async function Product({ searchParams }) {
     : `http://localhost:1337/api/products?populate=*`;
 
   const res = await fetch(apiUrl, {
-    cache: "no-store",
+    next: { revalidate: 60 }, 
   });
   const data = await res.json();
 

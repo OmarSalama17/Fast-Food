@@ -1,10 +1,17 @@
 "use client"
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import { usePathname } from 'next/navigation';
+
 
 import React from 'react'
 
 const Footer = () => {
+  const pathname = usePathname();
+  const hiddenRoutes = ['/contactUs' , '/product'];
+  if (hiddenRoutes.includes(pathname)) {
+    return null;
+  }
     const data = [
             {title : "Menu" , href:"/storelocations"},
             {title : "Store Locations" , href:"/Menu"},
@@ -104,7 +111,7 @@ const Footer = () => {
                 </div>
             </div>
             <div>
-                    <ul className='flex justify-evenly pt-[20px] pb-[25px]'>
+                    <ul className='flex justify-evenly flex-wrap pt-[20px] pb-[25px]'>
                         {
                             data.map((e , i)=>{
                                 return(

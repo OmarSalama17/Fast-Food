@@ -6,6 +6,7 @@ import Loading from '../loading';
 import ProductModal from "./ProductModal/ProductModal";
 import { useRouter, useSearchParams } from 'next/navigation';
 import ButtonWishlist from "./ButtonWishlist/ButtonWishlist";
+import Link from "next/link";
 
 export  function Hero ({dataFilter}){
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,6 @@ useEffect(()=>{
   if(productId){
     const product = data.find(item => item.documentId.toString() === productId)
     setSelectedProduct(product)
-    console.log(selectedProduct);
   }else{
     setSelectedProduct(null)
   }
@@ -39,7 +39,7 @@ const openModal =(product)=>{
             <span><img className='w-[23px] ml-[10px]' src='https://egypt.kfc.me/assets/top-deals-b9351756.png'/> 
             </span>
         </h2>
-        <p className='text-[#007aff] font-bold flex items-center'> View All 
+        <Link href={"/product"} className='text-[#007aff] font-bold flex items-center'> View All 
             <span className='ml-[7px]'>
                 <svg
   stroke="currentColor"
@@ -63,9 +63,9 @@ const openModal =(product)=>{
   />
                 </svg>
             </span>
-        </p>
+        </Link>
     </div>
-    <div className='container flex flex-wrap gap-5 py-[20px]'>
+    <div className='container flex justify-center md:!justify-start flex-wrap  gap-1 lg:!gap-5 py-[20px]'>
       {
           loading ? (
     Array.from({ length: 4 }).map((_, idx) => (

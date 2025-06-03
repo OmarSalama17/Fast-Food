@@ -63,7 +63,8 @@ const userEmail = user?.primaryEmailAddress?.emailAddress;
         {
           cart?.items?.map((item)=>{
             return( 
-                      <div className='flex items-center p-[20px] gap-[4%] bg-white shadow-custom rounded-lg'>
+              <div key={item.id}>
+                      <div className=' hidden lg:!flex items-center p-[20px] gap-[4%] bg-white shadow-custom rounded-lg'>
             <div className='w-full font-bold'>{item.product.title}</div>
             <div className='font-bold'>{item.product.price}.00EGP</div>
             <div className='flex justify-center items-center gap-[10px]'>
@@ -73,6 +74,21 @@ const userEmail = user?.primaryEmailAddress?.emailAddress;
             </div>
             <div className='margin-block'><img className='!w-[90px] h-[90px] max-w-none' src={item.product.image[0].url}/></div>
         </div>
+        <div className='!flex lg:!hidden justify-between items-center p-[20px] gap-[4%] bg-white shadow-custom rounded-lg'>
+          <div className='flex flex-col'>
+            <div className='w-full font-bold'>{item.product.title}</div>
+            <div className='font-bold'>{item.product.price}.00EGP</div>
+          </div>
+          <div className='flex flex-col'>
+            <div className='flex justify-end margin-block'><img className='!w-[90px] h-[90px] max-w-none' src={item.product.image[0].url}/></div>
+                      <div className='flex justify-end items-center gap-[10px]'>
+                <button onClick={()=> updateQuantity(item , item.quantity - 1)} className='w-[36px] h-[36px] bg-white border rounded-md shadow-custom font-bold'>-</button>
+                <div className='font-bold'>{item.quantity}</div>
+                <button onClick={()=> updateQuantity(item , item.quantity + 1)} className='w-[36px] h-[36px] bg-[red] border rounded-md shadow-custom font-bold text-white'>+</button>
+            </div>
+          </div>
+        </div>
+              </div>
             )
           })
         }

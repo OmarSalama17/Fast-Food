@@ -17,12 +17,12 @@ const Section = () => {
 return (
     <div className='container'>
 
-    <div className='flex gap-14 flex-row-reverse mt-[70px] mb-[50px] py-[50px]'>
+    <div className='flex gap-14 flex-col lg:flex-row-reverse mt-[70px] mb-[50px] py-[50px]'>
             {
                 data.map((item, index) =>{
                     return (
-                        <Link key={index} href={item.href} className='basis-[47.8%] rounded-md'> 
-                        <div className='basis-[47.8%] rounded-md' >
+                        <Link key={index} href={item.href} className='basis-[47.8%] lg:basis-[47.8%] rounded-md'> 
+                        <div className=' basis-[47.8%] rounded-md' >
                             <img className='w-full rounded-md' src={item.image} />
                         </div>
                         </Link>

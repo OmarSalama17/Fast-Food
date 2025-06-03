@@ -30,7 +30,7 @@ const Filter = () => {
   return (
     <div className='container'>
         <div className='flex justify-center items-center'>
-                    <ul className='flex bg-white rounded-lg mt-[105px] mx-[20px] py-[5px] px-[20px] w-[63%] filter-shadow'>
+                    <ul className='flex flex-wrap bg-white rounded-lg mt-[105px] mx-[20px] py-[5px] px-[20px] w-[63%] filter-shadow'>
             {
                 filter.map((item, value) =>{
                     return (
