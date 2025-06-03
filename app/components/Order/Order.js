@@ -12,13 +12,13 @@ const Order = ({setOrder}) => {
         className="bg-[#f1f3f6] rounded-3xl shadow-lg w-[400px]"
       >
         <div className="text-center bg-white  rounded-t-3xl p-[40px] pb-[20px] shadow-head">
-        <h1 className="text-[#393f52] font-bold mb-[10px]">Order History</h1>
+        <h1 className="text-[#393f52] !text-[16px] font-bold mb-[10px]">Order History</h1>
         </div>
         <div className="flex flex-col px-[16px] h-[400px] justify-between items-center">
             <div className="mt-[20px]">
                 <img className="w-[220px]" src="/empty-1a4f6e77.png"/>
             </div>
-            <h2>No Orders Yet!</h2>
+            <h2 className="!text-[16px]">No Orders Yet!</h2>
             <p className="text-[14px]">Start ordering your favourite items today.</p>
                         <div className='bg-[red] w-[100%] flex justify-center items-center mb-[20px] shadow-button'>
                 <Link onClick={()=> setOrder(false)} href="/product" className="py-[15px] px-[8px] font-bold text-[12px] text-white">EXPLORE DFC MENU</Link>

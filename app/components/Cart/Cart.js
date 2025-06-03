@@ -72,7 +72,7 @@ const removeFromCart = async (productId, userId, setCart, axiosClient) => {
           cart?.items?.map((item) => (
             <div key={item.id} className="shadow-custom p-[20px]">
               <div className="flex justify-between mb-[8px] ">
-                <h1 className="font-bold text-[#393f52]">{item.product.title}</h1>
+                <h1 className="font-bold text-[#393f52] text-[16px]">{item.product.title}</h1>
                 <span className="font-bold text-[#393f52]">{item.product.price * item.quantity}.00EGP</span>
               </div>
               <div className="flex justify-end items-center gap-[10px]">

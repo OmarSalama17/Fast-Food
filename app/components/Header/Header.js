@@ -180,8 +180,8 @@ function Header() {
                   : 0}
               </div>
             </Link>
-            <div className="flex justify-center items-center bg-[#fef7f8] border border-color rounded-md h-[43px] hover:bg-[#e4002b] text-[#e4002b] hover:text-white transition duration-300 ">
-              <a href="#" className="px-[16px] py-[6px] font-bold">
+            <div className="flex justify-center items-center bg-[#fef7f8]  border-color rounded-md h-[43px] hover:bg-[#e4002b]  hover:text-white transition duration-300 ">
+              <a href="#" className="px-[16px] !text-[#e4002b] py-[6px] font-bold">
                 عربي
               </a>
             </div>
@@ -249,7 +249,7 @@ function Header() {
               <UserButton/>
               </div>
               <div className=" text-[18px] flex flex-col justify-center items-center">
-                <h2>{user?.fullName}</h2>
+                <h2 className="text-[18px]">{user?.fullName}</h2>
                 <p className="text-[10px]">
                   {user?.primaryEmailAddress?.emailAddress}
                 </p>
