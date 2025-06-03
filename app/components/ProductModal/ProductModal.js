@@ -93,7 +93,7 @@ const ProductModal = ({ product, onClose }) => {
           className="bg-[#f1f3f6] h-[77vh] rounded-[40px] max-w-6xl w-full mx-2  overflow-hidden flex flex-col md:flex-row"
         >
           <div className="bg-white md:max-w-[230px] p-4 overflow-auto">
-            <ul>
+            <ul className="!p-0">
               {product.optionGroup.map((option, index) => (
                 <li key={index} className="py-2 text-end">
                   {option.title}
@@ -105,7 +105,7 @@ const ProductModal = ({ product, onClose }) => {
           <div className="bg-[#f1f3f6] flex-1 p-4 overflow-auto">
             <h3 className="p-2">Select your Favorite Sandwich</h3>
             <div className="bg-white rounded-xl mb-4">
-              <ul className="flex flex-col">
+              <ul className="flex flex-col !p-0">
                 <li className="flex items-center py-2 px-4 relative">
                   <img className="w-[60px] h-[60px] mr-4" src="https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/egy/imagestemp/110004.png" />
                   <span>Crunch Mix</span>
@@ -125,7 +125,7 @@ const ProductModal = ({ product, onClose }) => {
                 <h3 className="p-2">{option.title}</h3>
                 <div className="bg-white rounded-xl">
                   {option.options.map((opt, i) => (
-                    <ul className="flex flex-col" key={i}>
+                    <ul className="flex flex-col !p-0" key={i}>
                       <li className="flex items-center py-2 px-4 relative">
                         <img className="w-[60px] h-[60px] mr-4" src={opt.image[0].url} />
                         <span>{opt.title}</span>

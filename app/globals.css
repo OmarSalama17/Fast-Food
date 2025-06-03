@@ -17,8 +17,12 @@
   font-style: normal;
   font-display: swap;
 }
+
+h3{
+  font-size: 16px !important;
+}
 p{
-  margin: 0 ;
+  margin: 0px !important;
 }
 a {
   text-decoration: none !important;

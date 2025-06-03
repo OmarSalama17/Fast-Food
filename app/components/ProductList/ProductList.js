@@ -172,12 +172,12 @@ return (
       <div className="bottom-[-30px] bg-linear rounded-md text-white px-3">
         <div className="flex justify-between h-[44px] items-center m-[8px] w-full max-w-[300px]">
           <div>
-            <p className="font-bold text-sm sm:text-[14px] text-start">{getTotal()}.00 EGP</p>
-            <p className="text-[8px] font-bold">* All prices are VAT Inclusive</p>
+            <p className=" !m-[0px] font-bold text-sm sm:text-[14px] text-start">{getTotal()}.00 EGP</p>
+            <p className=" !m-[0px] text-[8px] font-bold">* All prices are VAT Inclusive</p>
           </div>
-          <Link href={"/cart"} className="flex font-bold text-sm sm:text-base">
+          <Link href={"/cart"} className="flex text-white font-bold text-sm sm:text-base">
             View Cart
-            <p>
+            <p className='!m-[0px]'>
               <svg
                 stroke="currentColor"
                 fill="currentColor"
