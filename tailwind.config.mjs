@@ -5,9 +5,14 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  corePlugins: {
+    container: false, // ✅ كده بتعطلها تمامًا
+  },
   theme: {
-    container: false,
     extend: {
+      boxShadow: {
+        'custom': '0 2.17631px 7.61708px rgba(155, 204, 244, 0.24)',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
