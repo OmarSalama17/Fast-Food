@@ -19,7 +19,7 @@ const categories = [
 const CategorySlider = () => {
   return (
     <div className="container relative w-full ">
-      <h3 className="flex relative items-center justify-between my-[30px] mt-[50px] font-bold ">
+      <h3 className="flex relative items-center justify-between text-[16px] my-[30px] mt-[50px] font-bold ">
         <span className="absolute bottom-[-2px] bg-red w-[33px] h-[2px]"></span>
         <span className="flex items-center">EXPLORE MENU <img className="ml-[8px]" src="https://egypt.kfc.me/assets/explore-menu-950b8776.png" width={20}/></span>
                 <Link href={"/product"} className='text-[#007aff] font-bold flex items-center'> View All 
