@@ -14,7 +14,6 @@ const Filter = () => {
     { label: "For Sharing",   value: "for-sharing" },
     { label: "Sides & Desserts", value: "sides-desserts" },
     { label: "Beverages",     value: "beverages" },
-    { label: "My Favorites",  value: "favorites" },
     ]
     const handleClick = (type) =>{
         const newParams = new URLSearchParams(searchParams.toString())
@@ -30,7 +29,7 @@ const Filter = () => {
   return (
     <div className='container'>
         <div className='flex justify-center items-center'>
-                    <ul className='flex flex-wrap bg-white rounded-lg mt-[105px] mx-[20px] py-[5px] px-[20px] w-[63%] filter-shadow'>
+                    <ul className='flex flex-wrap justify-between bg-white rounded-lg mt-[105px] mx-[20px] py-[5px] px-[20px] w-[63%] filter-shadow'>
             {
                 filter.map((item, value) =>{
                     return (

@@ -9,11 +9,11 @@ import { ChevronLeft, ChevronRight} from "lucide-react";
 import Link from "next/link";
 
 const categories = [
-  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1747156795/296_combo_1667c67bec.png", title: "EXCLUSIVE OFFERS", badge: true , href:""},
-  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1748900681/295_combo_82261a8c86.png", title: "FOR ONE" , href:""},
-  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1748900706/CITYPNG_COM_Crispy_Chicken_Nuggets_on_Plate_with_ketchup_HD_PNG_2000x2000_6026252b64.png", title: "FOR SHARING" , href:""},
-  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1748900710/CITYPNG_COM_Hot_Dog_with_Herbs_and_Sauce_on_a_Wooden_Plate_HD_PNG_2000x2000_48d3e26f0b.png", title: "SIDES & DESSERTS" , href:""},
-  { image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png", title: "BEVERAGES" , href:""},
+  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1747156795/296_combo_1667c67bec.png", title: "EXCLUSIVE OFFERS", badge: true , href:"/product?type=exclusive-offers"},
+  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1748900681/295_combo_82261a8c86.png", title: "FOR ONE" , href:"/product?type=for-one"},
+  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1748900706/CITYPNG_COM_Crispy_Chicken_Nuggets_on_Plate_with_ketchup_HD_PNG_2000x2000_6026252b64.png", title: "FOR SHARING" , href:"/product?type=for-sharing"},
+  { image: "https://res.cloudinary.com/dqvriwgrb/image/upload/v1748900710/CITYPNG_COM_Hot_Dog_with_Herbs_and_Sauce_on_a_Wooden_Plate_HD_PNG_2000x2000_48d3e26f0b.png", title: "SIDES & DESSERTS" , href:"/product?type=sides-desserts"},
+  { image: "https://kfcprodimages-ehcsdud6a5a5eqcm.z01.azurefd.net/cmsimages/kfc/imagestemp/66-Combo.png", title: "BEVERAGES" , href:"/product?type=beverages"},
 ];
 
 const CategorySlider = () => {
@@ -102,7 +102,7 @@ className="text-[#007aff] w-[20px] h-[20px]"
       >
         {categories.map((category, index) => (
           <SwiperSlide key={index} className="!w-[220px] ">
-            <Link href="/">
+            <Link href={category.href}>
             
             <div className="flex flex-col items-center text-center">
               <div className="w-[150px] h-[150px] rounded-full relative border-[3px] border-[#ffd8c8] bg-white flex items-center justify-center shadow-md">
