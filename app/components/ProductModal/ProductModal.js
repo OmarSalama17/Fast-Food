@@ -12,64 +12,58 @@ const ProductModal = ({ product, onClose }) => {
   const router = useRouter();
   const { cart, setCart, setLoader } = useGlobalContext();
   const { user } = useUser();
+const getUserCart = async (userEmail) => {
+  const res = await CartApis.getCart(userEmail);
 
-  const getUserCart = async (userEmail) => {
-    const res = await CartApis.getCart(userEmail);
-    if (res.data.data.length > 0) {
-      return res.data.data[0];
-    } else {
-      const createRes = await axiosClient.post(`/carts`, {
-        data: {
-          user_email: userEmail,
-          items: [],
-        },
-      });
-      return createRes.data.data;
-    }
-  };
+  if (res.data.data.length > 0) {
+    return res.data.data[0];
+  } else {
+    const createRes = await CartApis.addCart(userEmail);
+    return createRes.data.data;
+  }
+};
 
-  const addToCart = async (productId, userEmail) => {
-    if (!user) {
-      router.push("/sign-in");
-    }
-    setLoader(true);
-    const cart = await getUserCart(userEmail);
-    const oldItems = cart.items || [];
+const addToCart = async (productId, userEmail) => {
+  if (!user) {
+    router.push ("/sign-in")
+  }
+  setLoader(true)
+  const cart = await getUserCart(userEmail);
+  const oldItems = cart.items || [];
 
-    const existingItem = oldItems.find((item) => {
+  const existingItem = oldItems.find((item) => {
+    const currentDocId = item.product?.documentId;
+    return currentDocId === productId;
+  });
+
+  let newItems = [];
+
+  if (existingItem) {
+    newItems = oldItems.map((item) => {
       const currentDocId = item.product?.documentId;
-      return currentDocId === productId;
+      return {
+        product: { connect: [currentDocId] },
+        quantity: currentDocId === productId ? item.quantity + 1 : item.quantity,
+      };
     });
-
-    let newItems = [];
-
-    if (existingItem) {
-      newItems = oldItems.map((item) => {
-        const currentDocId = item.product?.documentId;
-        return {
-          product: { connect: [currentDocId] },
-          quantity: currentDocId === productId ? item.quantity + 1 : item.quantity,
-        };
-      });
-    } else {
-      newItems = [
-        ...oldItems.map((item) => ({
-          product: { connect: [item.product?.documentId] },
-          quantity: item.quantity,
-        })),
-        {
-          product: { connect: [productId] },
-          quantity: 1,
-        },
-      ];
-    }
-
-    await CartApis.updateCart(cart.documentId, newItems);
-    const updatedCartRes = await CartApis.getCart(userEmail);
-    const updatedCart = updatedCartRes.data.data[0];
-    setCart(updatedCart);
-    setLoader(false);
-  };
+  } else {
+    newItems = [
+      ...oldItems.map((item) => ({
+        product: { connect: [item.product?.documentId] },
+        quantity: item.quantity,
+      })),
+      {
+        product: { connect: [productId] },
+        quantity: 1,
+      },
+    ];
+  }
+  await CartApis.updateCart(cart.documentId , newItems);
+  const updatedCartRes = await CartApis.getCart(userEmail);
+  const updatedCart = updatedCartRes.data.data[0];
+  setCart(updatedCart);
+  setLoader(false)
+};
 
   return (
     <AnimatePresence>
