@@ -105,7 +105,7 @@ const Footer = () => {
     </a>
                 </div>
                 <div>
-                    <h4 className='pt-[25px]'>
+                    <h4 className='pt-[25px] text-[16px]'>
                         Items availability, prices, participation, delivery areas and charges, purchase requirements for delivery may vary.
                     </h4>
                 </div>
