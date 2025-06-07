@@ -33,7 +33,7 @@ const openModal =(product)=>{
     <>
     <div className='container flex justify-between mt-[50px]'>
         <h2 className='flex items-center text-[16px]  font-bold'>
-            <span className='border-b-2 border-color pb-[3px]'>Top</span> 
+            <span className=' border-color pb-[3px]'>Top</span> 
             <span className='w-[3px]'>  </span> 
             <span className='pb-[3px]'>Deals</span> 
             <span><img className='w-[23px] ml-[10px]' src='https://egypt.kfc.me/assets/top-deals-b9351756.png'/> 

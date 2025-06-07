@@ -36,7 +36,7 @@ body{
   box-shadow: rgba(222, 0, 0, 0.25) 0px 1rem 1rem;
 }
 .border-color{
-  border: 1px solid #e4002b !important;
+  border-bottom:2px solid #e4002b !important;
 }
 .shadow-nav{
   box-shadow: 0 .3rem .9rem #0000001a;
