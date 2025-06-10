@@ -9,23 +9,23 @@ import React from 'react'
 const Footer = () => {
   const pathname = usePathname();
   const hiddenRoutes = ['/contactUs' , '/product'];
+  const data = [
+    {title : "Menu" , href:"/storelocations"},
+    {title : "Store Locations" , href:"/Menu"},
+    {title : "Party Order" , href:"/partyorder"},
+    {title : "Privacy Policy" , href:"/privacypolicy"},
+    {title : "Cookie Policy" , href:"/cookiepolicy"},
+    {title : "Terms & Conditions" , href:"/terms&conditions"},
+    {title : "Contact" , href:"/contact"},
+  ]
+  const [isLoggedIn , setIsLoggedIn] = useState(false);
+  useEffect(()=>{
+    setIsLoggedIn(window.location.href.toString().includes("sign-in"))
+  },[])
+  const {user} = useUser()
   if (hiddenRoutes.includes(pathname)) {
     return null;
   }
-    const data = [
-            {title : "Menu" , href:"/storelocations"},
-            {title : "Store Locations" , href:"/Menu"},
-            {title : "Party Order" , href:"/partyorder"},
-            {title : "Privacy Policy" , href:"/privacypolicy"},
-            {title : "Cookie Policy" , href:"/cookiepolicy"},
-            {title : "Terms & Conditions" , href:"/terms&conditions"},
-            {title : "Contact" , href:"/contact"},
-    ]
-    const [isLoggedIn , setIsLoggedIn] = useState(false);
-    useEffect(()=>{
-    setIsLoggedIn(window.location.href.toString().includes("sign-in"))
-    },[])
-    const {user} = useUser()
 
   return !isLoggedIn && (
     <div className='bg-[#393f52] text-white py-[30px] relative'>

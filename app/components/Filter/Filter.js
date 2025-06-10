@@ -1,31 +1,32 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation'
-import React from 'react'
+import React, { useCallback } from 'react'
 
 const Filter = () => {
-    const router = useRouter()
-    const searchParams = useSearchParams()
-    const selectedType = searchParams.get("type")
-    const filter = [
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const selectedType = searchParams.get("type")
+
+  const filter = React.useMemo(() => [
     { label: "ALL", value: "" },
-    { label: "Deal Meals",    value: "deal-meals" },
+    { label: "Deal Meals", value: "deal-meals" },
     { label: "Exclusive Offers", value: "exclusive-offers" },
-    { label: "For One",       value: "for-one" },
-    { label: "For Sharing",   value: "for-sharing" },
+    { label: "For One", value: "for-one" },
+    { label: "For Sharing", value: "for-sharing" },
     { label: "Sides & Desserts", value: "sides-desserts" },
-    { label: "Beverages",     value: "beverages" },
-    ]
-    const handleClick = (type) =>{
-        const newParams = new URLSearchParams(searchParams.toString())
-        if (type === selectedType) {
-            newParams.delete("type")
-        }if (type === "") {
-            newParams.delete("type")
-        }else{
-            newParams.set("type", type)
-        }
-        router.push(`?${newParams.toString()}`)
+    { label: "Beverages", value: "beverages" },
+  ], [])
+
+  const handleClick = useCallback((type) => {
+    const newParams = new URLSearchParams(searchParams.toString())
+    if (type === selectedType || type === "") {
+      newParams.delete("type")
+    } else {
+      newParams.set("type", type)
     }
+    router.push(`?${newParams.toString()}`)
+  }, [router, searchParams, selectedType])
+
   return (
     <div className='container'>
         <div className='flex justify-center items-center'>

@@ -3,7 +3,7 @@ import Filter from "../components/Filter/Filter";
 import ProductList from "../components/ProductList/ProductList";
 
 export async function generateMetadata({ searchParams }) {
-    const params =  searchParams 
+    const params = await searchParams 
   const type = params.type || "All Products";;
 
   return {
@@ -18,7 +18,7 @@ export async function generateMetadata({ searchParams }) {
 export const revalidate = 60;
 
 export default async function Product({ searchParams }) {
-    const params =  searchParams
+    const params =  await searchParams
   const type = params.type;
 
   const apiUrl = type
