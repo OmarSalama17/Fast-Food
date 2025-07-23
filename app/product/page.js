@@ -22,8 +22,8 @@ export default async function Product({ searchParams }) {
   const type = params.type;
 
   const apiUrl = type
-    ? `${process.env.NEXT_PUBLIC_API_URL}/api/products?filters[type][$eq]=${type}&populate=*`
-    : `${process.env.NEXT_PUBLIC_API_URL}/api/products?populate=*`;
+    ? `${process.env.NEXT_PUBLIC_API_URL}/products?filters[type][$eq]=${type}&populate=*`
+    : `${process.env.NEXT_PUBLIC_API_URL}/products?populate=*`;
 
   const res = await fetch(apiUrl, {
     next: { revalidate: 60 }, 
