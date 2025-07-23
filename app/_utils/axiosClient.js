@@ -1,10 +1,10 @@
 const { default: axios } = require("axios");
 
 const apiKey = process.env.NEXT_PUBLIC_REST_API_KEY;
-const apiURL = 'https://strapi-fast-food-2.onrender.com/api';
+const apiURL = 'https://fastfood-b03d.onrender.com/api';
 
 const axiosClient = axios.create({
-    baseURL: apiKey,
+    baseURL: apiURL,
     headers: {
         Authorization:`Bearer ${apiKey}`
     }
