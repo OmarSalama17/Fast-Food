@@ -1,72 +1,165 @@
 "use client";
+import { ArrowLeft } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from 'next/navigation';
-import { useGlobalContext } from '../Context-Api/Context-Api';
-import { useUser } from '@clerk/nextjs';
-import CartApis from '../../_utils/cartApis';
-import React, { useState } from 'react';
+import { useRouter } from "next/navigation";
+import { useGlobalContext } from "../Context-Api/Context-Api";
+import { useUser } from "@clerk/nextjs";
+import CartApis from "../../_utils/cartApis";
+import React, { useState } from "react";
 
 const ProductModal = ({ product, onClose }) => {
   const [isChecked, setIsChecked] = useState(true);
+  const [selectedOption, setSelectedOption] = useState(null);
   const router = useRouter();
   const { cart, setCart, setLoader } = useGlobalContext();
   const { user } = useUser();
-const getUserCart = async (userEmail) => {
-  const res = await CartApis.getCart(userEmail);
 
-  if (res.data.data.length > 0) {
-    return res.data.data[0];
-  } else {
-    const createRes = await CartApis.addCart(userEmail);
-    return createRes.data.data;
-  }
-};
+  const getUserCart = async (userEmail) => {
+    const res = await CartApis.getCart(userEmail);
 
-const addToCart = async (productId, userEmail) => {
-  if (!user) {
-    router.push ("/sign-in")
-  }
-  setLoader(true)
-  const cart = await getUserCart(userEmail);
-  const oldItems = cart.items || [];
+    if (res.data.data.length > 0) {
+      return res.data.data[0];
+    } else {
+      const createRes = await CartApis.addCart(userEmail);
+      return createRes.data.data;
+    }
+  };
 
-  const existingItem = oldItems.find((item) => {
-    const currentDocId = item.product?.documentId;
-    return currentDocId === productId;
-  });
+  const addToCart = async (productId, userEmail) => {
+    if (!user) {
+      router.push("/sign-in");
+    }
+    setLoader(true);
+    const cart = await getUserCart(userEmail);
+    const oldItems = cart.items || [];
 
-  let newItems = [];
-
-  if (existingItem) {
-    newItems = oldItems.map((item) => {
+    const existingItem = oldItems.find((item) => {
       const currentDocId = item.product?.documentId;
-      return {
-        product: { connect: [currentDocId] },
-        quantity: currentDocId === productId ? item.quantity + 1 : item.quantity,
-      };
+      return currentDocId === productId;
     });
-  } else {
-    newItems = [
-      ...oldItems.map((item) => ({
-        product: { connect: [item.product?.documentId] },
-        quantity: item.quantity,
-      })),
-      {
-        product: { connect: [productId] },
-        quantity: 1,
-      },
-    ];
-  }
-  await CartApis.updateCart(cart.documentId , newItems);
-  const updatedCartRes = await CartApis.getCart(userEmail);
-  const updatedCart = updatedCartRes.data.data[0];
-  setCart(updatedCart);
-  setLoader(false)
-};
+
+    let newItems = [];
+
+    if (existingItem) {
+      newItems = oldItems.map((item) => {
+        const currentDocId = item.product?.documentId;
+        return {
+          product: { connect: [currentDocId] },
+          quantity:
+            currentDocId === productId ? item.quantity + 1 : item.quantity,
+        };
+      });
+    } else {
+      newItems = [
+        ...oldItems.map((item) => ({
+          product: { connect: [item.product?.documentId] },
+          quantity: item.quantity,
+        })),
+        {
+          product: { connect: [productId] },
+          quantity: 1,
+        },
+      ];
+    }
+    await CartApis.updateCart(cart.documentId, newItems);
+    const updatedCartRes = await CartApis.getCart(userEmail);
+    const updatedCart = updatedCartRes.data.data[0];
+    setCart(updatedCart);
+    setLoader(false);
+  };
 
   return (
-    <AnimatePresence>
+<>
+    <div className="lg:hidden">
+          <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="fixed inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center z-50"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          exit={{ scale: 0.8 }}
+          transition={{ duration: 0.3 }}
+          onClick={(e) => e.stopPropagation()}
+          className="bg-white  rounded-[20px]  w-full mx-2 pt-[71px] overflow-hidden flex flex-col"
+        >
+          <div className="flex items-center justify-between px-4 py-3 border-b">
+            <h2 className="flex gap-[10px] font-semibold text-lg">
+              <p onClick={onClose}>
+                <ArrowLeft className="w-6 h-6 cursor-pointer" />
+              </p>{" "}
+              {product.title}
+            </h2>
+            <div className="flex gap-2">
+              <button className="border border-red-500 text-red-500 px-3 py-1 rounded-md text-sm hover:bg-red-50">
+                عربي
+              </button>
+              <button className="border border-gray-300 px-3 py-1 rounded-md text-sm hover:bg-gray-50">
+                RESET
+              </button>
+            </div>
+          </div>
+
+          <div className="w-full h-40 relative flex justify-center items-center bg-[#f1f3f6]">
+            <img
+              src={product.image[0].url}
+              alt={product.title}
+              className="object-contain h-full"
+            />
+          </div>
+
+          <div className="flex-1 overflow-auto p-4">
+            {product.optionGroup.map((option, index) => (
+              <div key={index} className="mb-4">
+                <h3 className="font-semibold mb-2">{option.title}</h3>
+                <div className="bg-white rounded-xl">
+                  {option.options.map((opt, i) => (
+                    <label
+                      key={i}
+                      className="flex items-center justify-between border-b p-3 cursor-pointer hover:bg-gray-50"
+                    >
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={opt.image[0].url}
+                          alt={opt.title}
+                          className="w-[60px] h-[60px]"
+                        />
+                        <span>{opt.title}</span>
+                      </div>
+                      <input
+                        type="radio"
+                        name={`option-${index}`}
+                        checked={selectedOption === opt.title}
+                        onChange={() => setSelectedOption(opt.title)}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-between p-2 border-t bg-gray-50">
+            <p></p>
+                                    <div className="flex justify-between items-center  m-[8px] min-w-[300px] bg-linear rounded-md text-[white] p-2">
+                                    <div>
+                                    <p className="font-bold text-[14px] text-start">{product.price}.00 EGP</p>
+                                    <p className="text-[8px] font bold">* All prices are VAT Inclusive</p>
+                                    </div>
+                                    <button onClick={()=> addToCart(product.documentId, user?.primaryEmailAddress?.emailAddress)} className="flex  font-bold ">Add to cart <p><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" className="text-[23px] ml-[10px] bg-[white] text-[black] rounded-2xl  _chevron_wyjg5_134" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/></svg></p></button>
+                                    </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+    </div>
+    <div className="hidden lg:block">
+          <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -156,6 +249,8 @@ const addToCart = async (productId, userEmail) => {
         </motion.div>
       </motion.div>
     </AnimatePresence>
+    </div>
+</>
   );
 };
 
