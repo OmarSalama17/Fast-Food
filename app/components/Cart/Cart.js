@@ -2,78 +2,70 @@
 import { useGlobalContext } from "../Context-Api/Context-Api";
 import { useUser } from "@clerk/nextjs";
 import React from "react";
+import { useEffect } from "react";
 
 import cartApis from "../../_utils/cartApis";
 
 const Cart = () => {
   const { user } = useUser();
-const userEmail = user?.primaryEmailAddress?.emailAddress;
-  const { cart, setCart , setLoader} = useGlobalContext();
+  const userEmail = user?.primaryEmailAddress?.emailAddress;
+  const { cart, setCart, setLoader } = useGlobalContext();
+
+
 
   const updateQuantity = async (item, newQuantity) => {
-    setLoader(true)
-    const cartId = cart?.documentId;
+    setLoader(true);
+    const cartId = cart?.id;
     if (!cartId) return;
     let updatedItems;
     if (newQuantity < 1) {
       updatedItems = cart.items
-        .filter((i) => i.id !== item.id)
+        .filter((i) => i.product.documentId !== item.product.documentId)
         .map((i) => ({
-          product: { connect: [i.product?.documentId] },
+          product: i.product,
           quantity: i.quantity,
         }));
     } else {
       updatedItems = cart.items.map((i) => ({
-        product: { connect: [i.product?.documentId] },
-        quantity: i.id === item.id ? newQuantity : i.quantity,
+        product: i.product,
+        quantity:
+          i.product.documentId === item.product.documentId
+            ? newQuantity
+            : i.quantity,
       }));
     }
     await cartApis.updateCart(cartId, updatedItems);
-    const updatedCartRes = await cartApis.getCart(userEmail);
-    const updatedCart = updatedCartRes.data.data[0];
-    setCart(updatedCart);
-    setLoader(false)
+    const updatedCarts = await cartApis.getCart(userEmail);
+    setCart(updatedCarts?.[0] || null);
+    setLoader(false);
   };
-
-const removeFromCart = async (productId, userId, setCart, axiosClient) => {
-  const cartRes = await axiosClient.get(`/carts?filters[clerk_user_id][$eq]=${userId}&populate[items][populate]=product`);
-  const cart = cartRes.data.data[0];
-  if (!cart) return;
-  const filteredItems = cart.items.filter(item => item.product?.documentId !== productId);
-  const newItems = filteredItems.map(item => ({
-    product: { connect: [item.product.documentId] },
-    quantity: item.quantity,
-  }));
-  await axiosClient.put(`/carts/${cart.documentId}`, {
-    data: {
-      items: newItems,
-    },
-  });
-  const updatedCartRes = await axiosClient.get(`/carts?filters[clerk_user_id][$eq]=${userId}&populate[items][populate]=product`);
-  const updatedCart = updatedCartRes.data.data[0];
-
-  setCart(updatedCart);
-};
 
   return (
     <div className=" sticky top-[100px] overflow-auto w-[400px] bg-white mt-[70px] bg-height rounded-xl">
       <div className="bg-[#f5faff] py-[14px] px-[20px] rounded-xl">
         {cart?.items?.length > 0 ? (
           <h1 className="font-bold text-[18px] text-[#333333]">
-            {cart?.items?.reduce((total, item) => total + item.quantity, 0)} Item Added
+            {cart?.items?.reduce((total, item) => total + item.quantity, 0)}{" "}
+            Item Added
           </h1>
         ) : (
-          <h1 className="font-bold text-[18px] text-[#333333]">Your Cart is Empty</h1>
+          <h1 className="font-bold text-[18px] text-[#333333]">
+            Your Cart is Empty
+          </h1>
         )}
       </div>
 
       <div className="flex flex-col gap-4 p-[20px] ">
         {cart?.items ? (
           cart?.items?.map((item) => (
-            <div key={item.id} className="shadow-custom p-[20px]">
+            <div key={item.product.documentId} className="shadow-custom p-[20px]">
               <div className="flex justify-between mb-[8px] ">
-                <h1 className="font-bold text-[#393f52] text-[16px]">{item.product.title}</h1>
-                <span className="font-bold text-[#393f52]">{item.product.price * item.quantity}.00EGP</span>
+                <h1 className="font-bold text-[#393f52] text-[16px]">
+                  {item.product.title}
+                </h1>
+                <span className="font-bold text-[#393f52]">
+                  {item.product.price * item.quantity}.00EGP
+                </span>
               </div>
               <div className="flex justify-end items-center gap-[10px]">
                 <button

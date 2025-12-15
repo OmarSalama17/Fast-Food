@@ -12,45 +12,42 @@ const Cart = () => {
 const userEmail = user?.primaryEmailAddress?.emailAddress;
 
   const updateQuantity = async (item, newQuantity) => {
-    setLoader(true)
-    const cartId = cart?.documentId;
+    setLoader(true);
+    const cartId = cart?.id;
     if (!cartId) return;
     let updatedItems;
     if (newQuantity < 1) {
       updatedItems = cart.items
-        .filter((i) => i.id !== item.id)
+        .filter((i) => i.product.documentId !== item.product.documentId)
         .map((i) => ({
-          product: { connect: [i.product?.documentId] },
+          product: i.product,
           quantity: i.quantity,
         }));
     } else {
       updatedItems = cart.items.map((i) => ({
-        product: { connect: [i.product?.documentId] },
-        quantity: i.id === item.id ? newQuantity : i.quantity,
+        product: i.product,
+        quantity:
+          i.product.documentId === item.product.documentId
+            ? newQuantity
+            : i.quantity,
       }));
     }
     await cartApis.updateCart(cartId, updatedItems);
-    const updatedCartRes = await cartApis.getCart(userEmail);
-    const updatedCart = updatedCartRes.data.data[0];
-    setCart(updatedCart);
-    setLoader(false)
+    const updatedCarts = await cartApis.getCart(userEmail);
+    setCart(updatedCarts?.[0] || null);
+    setLoader(false);
   };
 
-          const getTotal = (dev) =>{
-            let total = 0
-            if (dev) {
-                cart?.items?.forEach(item =>{
-              total += item.product.price
-            })
-            return total + dev
-            }else{
-                cart?.items?.forEach(item =>{
-              total += item.product.price 
-            })
-            return total
-            }
-          }
-    const x = 1 
+const getTotal = (dev = 0) => {
+  const items = Array.isArray(cart?.items) ? cart.items : [];
+
+  return (
+    items.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    ) + dev
+  );
+};
   return (
 <div className="container mt-[110px] ">
   <div className="flex flex-wrap justify-between">
@@ -63,7 +60,7 @@ const userEmail = user?.primaryEmailAddress?.emailAddress;
         {
           cart?.items?.map((item)=>{
             return( 
-              <div key={item.id}>
+              <div key={item.product.documentId}>
                       <div className=' hidden lg:!flex items-center p-[20px] gap-[4%] bg-white shadow-custom rounded-lg'>
             <div className='w-full font-bold'>{item.product.title}</div>
             <div className='font-bold'>{item.product.price}.00EGP</div>

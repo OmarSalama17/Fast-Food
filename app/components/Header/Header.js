@@ -10,7 +10,7 @@ import { PhoneCall } from "lucide-react";
 import Order from "../Order/Order";
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [order , setOrder] = useState(false);
+  const [order, setOrder] = useState(false);
   const pathname = usePathname();
   const isSignInPage =
     pathname.includes("sign-in") || pathname.includes("sign-up");
@@ -19,18 +19,17 @@ function Header() {
   const userEmail = user?.primaryEmailAddress?.emailAddress;
 
   useEffect(() => {
+    if (!userEmail) return;
+
     const fetchCart = async () => {
-      if (!userEmail) return;
-
-      const res = await cartApis.getCart(userEmail);
-      const userCart = res?.data?.data[0];
-
-      setCart(userCart);
+      const carts = await cartApis.getCart(userEmail);
+      setCart(carts?.[0] || null);
     };
 
     fetchCart();
   }, [userEmail]);
   if (isSignInPage) return null;
+
   return (
     <>
       <header className="bg-white py-[14px] fixed top-0 left-0 w-full z-30 shadow-nav  z-1000">
@@ -172,16 +171,16 @@ function Header() {
                 </g>
               </svg>
               <div className="absolute text-[white] grid text-xs h-[18px] w-[18px] font-bold right-[-5px] place-items-center top-[-5px] bg-red-500 rounded-[27px]">
-                {cart?.items
-                  ? cart?.items?.reduce(
-                      (total, item) => total + item.quantity,
-                      0
-                    )
+                {Array.isArray(cart?.items)
+                  ? cart.items.reduce((total, item) => total + item.quantity, 0)
                   : 0}
               </div>
             </Link>
             <div className="flex justify-center items-center bg-[#fef7f8]  border-color rounded-md h-[43px] hover:bg-[#e4002b]  hover:text-white transition duration-300 ">
-              <a href="#" className="px-[16px] !text-[#e4002b] py-[6px] font-bold">
+              <a
+                href="#"
+                className="px-[16px] !text-[#e4002b] py-[6px] font-bold"
+              >
                 عربي
               </a>
             </div>
@@ -246,7 +245,7 @@ function Header() {
           ) : (
             <div className="flex items-center p-[10px]">
               <div className="w-[40px] h-[40px] rounded-full  flex justify-center items-center mr-[10px]">
-              <UserButton/>
+                <UserButton />
               </div>
               <div className=" text-[18px] flex flex-col justify-center items-center">
                 <h2 className="text-[18px]">{user?.fullName}</h2>
@@ -273,7 +272,11 @@ function Header() {
                   fill="#393F52"
                 ></path>
               </svg>
-              <Link onClick={()=> setOrder(true)} href="" className="block text-gray-700">
+              <Link
+                onClick={() => setOrder(true)}
+                href=""
+                className="block text-gray-700"
+              >
                 Order History
               </Link>
             </li>
@@ -292,7 +295,10 @@ function Header() {
                   fill="#393F52"
                 ></path>
               </svg>
-              <Link href="/product?type=exclusive-offers" className="block text-gray-700">
+              <Link
+                href="/product?type=exclusive-offers"
+                className="block text-gray-700"
+              >
                 Offers
               </Link>
             </li>
@@ -356,11 +362,7 @@ function Header() {
           </ul>
         </div>
       </div>
-      {
-        order ?
-        <Order setOrder={setOrder}/>
-        :""
-      }
+      {order ? <Order setOrder={setOrder} /> : ""}
     </>
   );
 }

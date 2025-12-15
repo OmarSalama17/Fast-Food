@@ -15,59 +15,57 @@ const ProductModal = ({ product, onClose }) => {
   const { cart, setCart, setLoader } = useGlobalContext();
   const { user } = useUser();
 
-  const getUserCart = async (userEmail) => {
-    const res = await CartApis.getCart(userEmail);
+const getUserCart = async (userEmail) => {
+  const carts = await CartApis.getCart(userEmail);
 
-    if (res.data.data.length > 0) {
-      return res.data.data[0];
-    } else {
-      const createRes = await CartApis.addCart(userEmail);
-      return createRes.data.data;
-    }
-  };
+  if (Array.isArray(carts) && carts.length > 0) {
+    return carts[0];
+  }
 
-  const addToCart = async (productId, userEmail) => {
-    if (!user) {
-      router.push("/sign-in");
-    }
-    setLoader(true);
-    const cart = await getUserCart(userEmail);
-    const oldItems = cart.items || [];
+  return await CartApis.addCart(userEmail);
+};
 
-    const existingItem = oldItems.find((item) => {
-      const currentDocId = item.product?.documentId;
-      return currentDocId === productId;
-    });
+const addToCart = async (product, userEmail) => {
+  if (!user) {
+    router.push("/sign-in");
+    return;
+  }
 
-    let newItems = [];
+  setLoader(true);
 
-    if (existingItem) {
-      newItems = oldItems.map((item) => {
-        const currentDocId = item.product?.documentId;
-        return {
-          product: { connect: [currentDocId] },
-          quantity:
-            currentDocId === productId ? item.quantity + 1 : item.quantity,
-        };
-      });
-    } else {
-      newItems = [
-        ...oldItems.map((item) => ({
-          product: { connect: [item.product?.documentId] },
-          quantity: item.quantity,
-        })),
-        {
-          product: { connect: [productId] },
-          quantity: 1,
-        },
-      ];
-    }
-    await CartApis.updateCart(cart.documentId, newItems);
-    const updatedCartRes = await CartApis.getCart(userEmail);
-    const updatedCart = updatedCartRes.data.data[0];
-    setCart(updatedCart);
-    setLoader(false);
-  };
+  const cart = await getUserCart(userEmail);
+  const oldItems = Array.isArray(cart.items) ? cart.items : [];
+
+  const existingItem = oldItems.find(
+    (item) => item.product.documentId === product.documentId
+  );
+
+  let newItems;
+
+  if (existingItem) {
+    newItems = oldItems.map((item) =>
+      item.product.documentId === product.documentId
+        ? { ...item, quantity: item.quantity + 1 }
+        : item
+    );
+  } else {
+    newItems = [
+      ...oldItems,
+      {
+        product: product,
+        quantity: 1,
+      },
+    ];
+  }
+
+  await CartApis.updateCart(cart.id, newItems);
+
+  const updatedCarts = await CartApis.getCart(userEmail);
+  setCart(updatedCarts?.[0] || null);
+
+  setLoader(false);
+};
+
 
   return (
 <>
@@ -240,7 +238,7 @@ const ProductModal = ({ product, onClose }) => {
                                     <p className="font-bold text-[14px] text-start">{product.price}.00 EGP</p>
                                     <p className="text-[8px] font bold">* All prices are VAT Inclusive</p>
                                     </div>
-                                    <button onClick={()=> addToCart(product.documentId, user?.primaryEmailAddress?.emailAddress)} className="flex  font-bold ">Add to cart <p><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" className="text-[23px] ml-[10px] bg-[white] text-[black] rounded-2xl  _chevron_wyjg5_134" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/></svg></p></button>
+                                    <button onClick={()=> addToCart(product, user?.primaryEmailAddress?.emailAddress)} className="flex  font-bold ">Add to cart <p><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" className="text-[23px] ml-[10px] bg-[white] text-[black] rounded-2xl  _chevron_wyjg5_134" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/></svg></p></button>
                                     </div>
                                 </div>
                             </div>

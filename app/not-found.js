@@ -4,7 +4,6 @@ import React from 'react'
 
 const NotFound = () => {
 
-  // دالة العودة للصفحة السابقة
   const goBack = () => {
     window.history.back();
   }
